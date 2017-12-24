@@ -15,7 +15,9 @@
  */
 package org.apache.ibatis.submitted.extends_with_constructor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -47,10 +49,10 @@ public class NpeExtendsTest {
 
         try {
             Class.forName("org.hsqldb.jdbcDriver");
-            conn = DriverManager.getConnection("jdbc:hsqldb:mem:extends_with_constructor", "sa",
-                    "");
+            conn = DriverManager.getConnection("jdbc:hsqldb:mem:extends_with_constructor", "sa", "");
 
-            Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/extends_with_constructor/CreateDB.sql");
+            Reader reader =
+                    Resources.getResourceAsReader("org/apache/ibatis/submitted/extends_with_constructor/CreateDB.sql");
 
             ScriptRunner runner = new ScriptRunner(conn);
             runner.setLogWriter(null);
@@ -64,7 +66,7 @@ public class NpeExtendsTest {
             }
         }
     }
-    
+
     @Test
     public void testNoConstructorConfiguration() {
         Configuration configuration = new Configuration();
@@ -72,6 +74,7 @@ public class NpeExtendsTest {
         configuration.addMapper(TeacherMapper.class);
         configuration.getMappedStatementNames();
     }
+
     @Test
     public void testWithConstructorConfiguration() {
         Configuration configuration = new Configuration();
@@ -79,7 +82,7 @@ public class NpeExtendsTest {
         configuration.addMapper(TeacherMapper.class);
         configuration.getMappedStatementNames();
     }
-    
+
     private SqlSessionFactory getSqlSessionFactoryWithConstructor() {
         UnpooledDataSourceFactory unpooledDataSourceFactory = new UnpooledDataSourceFactory();
         Properties properties = new Properties();
@@ -87,17 +90,19 @@ public class NpeExtendsTest {
         properties.setProperty("url", "jdbc:hsqldb:mem:extends_with_constructor");
         properties.setProperty("username", "sa");
         unpooledDataSourceFactory.setProperties(properties);
-        Environment environment = new Environment("extends_with_constructor", new JdbcTransactionFactory(), unpooledDataSourceFactory.getDataSource());
-        
+        Environment environment = new Environment("extends_with_constructor", new JdbcTransactionFactory(),
+                unpooledDataSourceFactory.getDataSource());
+
         Configuration configuration = new Configuration();
         configuration.setEnvironment(environment);
         configuration.addMapper(StudentConstructorMapper.class);
         configuration.addMapper(TeacherMapper.class);
         configuration.getMappedStatementNames();
         configuration.setAutoMappingBehavior(AutoMappingBehavior.NONE);
-        
+
         return new DefaultSqlSessionFactory(configuration);
     }
+
     @Test
     public void testSelectWithTeacher() {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactoryWithConstructor();
@@ -111,6 +116,7 @@ public class NpeExtendsTest {
             sqlSession.close();
         }
     }
+
     @Test
     public void testSelectNoName() {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactoryWithConstructor();

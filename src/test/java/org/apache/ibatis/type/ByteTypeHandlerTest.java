@@ -23,52 +23,52 @@ import org.junit.Test;
 
 public class ByteTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Byte> TYPE_HANDLER = new ByteTypeHandler();
+    private static final TypeHandler<Byte> TYPE_HANDLER = new ByteTypeHandler();
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, (byte) 100, null);
-    verify(ps).setByte(1, (byte) 100);
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, (byte) 100, null);
+        verify(ps).setByte(1, (byte) 100);
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    when(rs.getByte("column")).thenReturn((byte) 100);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Byte((byte) 100), TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        when(rs.getByte("column")).thenReturn((byte) 100);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Byte((byte) 100), TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    when(rs.getByte(1)).thenReturn((byte) 100);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Byte((byte) 100), TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        when(rs.getByte(1)).thenReturn((byte) 100);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Byte((byte) 100), TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getByte(1)).thenReturn((byte) 100);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(new Byte((byte) 100), TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getByte(1)).thenReturn((byte) 100);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(new Byte((byte) 100), TYPE_HANDLER.getResult(cs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    // Unnecessary
- }
+    @Override
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        // Unnecessary
+    }
 
 }

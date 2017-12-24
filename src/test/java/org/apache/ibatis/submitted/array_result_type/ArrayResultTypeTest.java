@@ -15,7 +15,7 @@
  */
 package org.apache.ibatis.submitted.array_result_type;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -30,75 +30,76 @@ import org.junit.Test;
 
 public class ArrayResultTypeTest {
 
-  private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
-    // create an SqlSessionFactory
-    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/array_result_type/mybatis-config.xml");
-    sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-    reader.close();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        // create an SqlSessionFactory
+        Reader reader =
+                Resources.getResourceAsReader("org/apache/ibatis/submitted/array_result_type/mybatis-config.xml");
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        reader.close();
 
-    // populate in-memory database
-    SqlSession session = sqlSessionFactory.openSession();
-    Connection conn = session.getConnection();
-    reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/array_result_type/CreateDB.sql");
-    ScriptRunner runner = new ScriptRunner(conn);
-    runner.setLogWriter(null);
-    runner.runScript(reader);
-    reader.close();
-    session.close();
-  }
-
-  @Test
-  public void shouldGetUserArray() {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      User[] users = mapper.getUsers();
-      assertEquals("User1", users[0].getName());
-      assertEquals("User2", users[1].getName());
-    } finally {
-      sqlSession.close();
+        // populate in-memory database
+        SqlSession session = sqlSessionFactory.openSession();
+        Connection conn = session.getConnection();
+        reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/array_result_type/CreateDB.sql");
+        ScriptRunner runner = new ScriptRunner(conn);
+        runner.setLogWriter(null);
+        runner.runScript(reader);
+        reader.close();
+        session.close();
     }
-  }
 
-  @Test
-  public void shouldGetUserArrayXml() {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      User[] users = mapper.getUsersXml();
-      assertEquals("User1", users[0].getName());
-      assertEquals("User2", users[1].getName());
-    } finally {
-      sqlSession.close();
+    @Test
+    public void shouldGetUserArray() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Mapper mapper = sqlSession.getMapper(Mapper.class);
+            User[] users = mapper.getUsers();
+            assertEquals("User1", users[0].getName());
+            assertEquals("User2", users[1].getName());
+        } finally {
+            sqlSession.close();
+        }
     }
-  }
 
-  @Test
-  public void shouldGetSimpleTypeArray() {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      Integer[] ids = mapper.getUserIds();
-      assertEquals(Integer.valueOf(1), ids[0]);
-    } finally {
-      sqlSession.close();
+    @Test
+    public void shouldGetUserArrayXml() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Mapper mapper = sqlSession.getMapper(Mapper.class);
+            User[] users = mapper.getUsersXml();
+            assertEquals("User1", users[0].getName());
+            assertEquals("User2", users[1].getName());
+        } finally {
+            sqlSession.close();
+        }
     }
-  }
 
-  @Test(expected = ClassCastException.class)
-  public void shouldGetPrimitiveArray() {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      // Throwing an exception is the expected behavior
-      // until #555 is fixed
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      int[] ids = mapper.getUserIdsPrimitive();
-      assertEquals(1, ids[0]);
-    } finally {
-      sqlSession.close();
+    @Test
+    public void shouldGetSimpleTypeArray() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Mapper mapper = sqlSession.getMapper(Mapper.class);
+            Integer[] ids = mapper.getUserIds();
+            assertEquals(Integer.valueOf(1), ids[0]);
+        } finally {
+            sqlSession.close();
+        }
     }
-  }
+
+    @Test(expected = ClassCastException.class)
+    public void shouldGetPrimitiveArray() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            // Throwing an exception is the expected behavior
+            // until #555 is fixed
+            Mapper mapper = sqlSession.getMapper(Mapper.class);
+            int[] ids = mapper.getUserIdsPrimitive();
+            assertEquals(1, ids[0]);
+        } finally {
+            sqlSession.close();
+        }
+    }
 }

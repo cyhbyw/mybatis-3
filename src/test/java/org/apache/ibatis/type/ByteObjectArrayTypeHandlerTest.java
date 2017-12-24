@@ -15,74 +15,74 @@
  */
 package org.apache.ibatis.type;
 
-import org.junit.Test;
-
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Test;
+
 public class ByteObjectArrayTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Byte[]> TYPE_HANDLER = new ByteObjectArrayTypeHandler();
+    private static final TypeHandler<Byte[]> TYPE_HANDLER = new ByteObjectArrayTypeHandler();
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, new Byte[] { 1, 2, 3 }, null);
-    verify(ps).setBytes(1, new byte[] { 1, 2, 3 });
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, new Byte[] {1, 2, 3}, null);
+        verify(ps).setBytes(1, new byte[] {1, 2, 3});
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    byte[] byteArray = new byte[]{1, 2};
-    when(rs.getBytes("column")).thenReturn(byteArray);
-    when(rs.wasNull()).thenReturn(false);
-    assertThat(TYPE_HANDLER.getResult(rs, "column"), is(new Byte[]{1, 2}));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        byte[] byteArray = new byte[] {1, 2};
+        when(rs.getBytes("column")).thenReturn(byteArray);
+        when(rs.wasNull()).thenReturn(false);
+        assertThat(TYPE_HANDLER.getResult(rs, "column"), is(new Byte[] {1, 2}));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    when(rs.getBlob("column")).thenReturn(null);
-    when(rs.wasNull()).thenReturn(true);
-    assertThat(TYPE_HANDLER.getResult(rs, "column"), nullValue());
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        when(rs.getBlob("column")).thenReturn(null);
+        when(rs.wasNull()).thenReturn(true);
+        assertThat(TYPE_HANDLER.getResult(rs, "column"), nullValue());
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    byte[] byteArray = new byte[]{1, 2};
-    when(rs.getBytes(1)).thenReturn(byteArray);
-    when(rs.wasNull()).thenReturn(false);
-    assertThat(TYPE_HANDLER.getResult(rs, 1), is(new Byte[]{1, 2}));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        byte[] byteArray = new byte[] {1, 2};
+        when(rs.getBytes(1)).thenReturn(byteArray);
+        when(rs.wasNull()).thenReturn(false);
+        assertThat(TYPE_HANDLER.getResult(rs, 1), is(new Byte[] {1, 2}));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    when(rs.getBlob(1)).thenReturn(null);
-    when(rs.wasNull()).thenReturn(true);
-    assertThat(TYPE_HANDLER.getResult(rs, 1), nullValue());
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        when(rs.getBlob(1)).thenReturn(null);
+        when(rs.wasNull()).thenReturn(true);
+        assertThat(TYPE_HANDLER.getResult(rs, 1), nullValue());
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    byte[] byteArray = new byte[]{1, 2};
-    when(cs.getBytes(1)).thenReturn(byteArray);
-    when(cs.wasNull()).thenReturn(false);
-    assertThat(TYPE_HANDLER.getResult(cs, 1), is(new Byte[]{1, 2}));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        byte[] byteArray = new byte[] {1, 2};
+        when(cs.getBytes(1)).thenReturn(byteArray);
+        when(cs.wasNull()).thenReturn(false);
+        assertThat(TYPE_HANDLER.getResult(cs, 1), is(new Byte[] {1, 2}));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    when(cs.getBlob(1)).thenReturn(null);
-    when(cs.wasNull()).thenReturn(true);
-    assertThat(TYPE_HANDLER.getResult(cs, 1), nullValue());
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        when(cs.getBlob(1)).thenReturn(null);
+        when(cs.wasNull()).thenReturn(true);
+        assertThat(TYPE_HANDLER.getResult(cs, 1), nullValue());
+    }
 
 }

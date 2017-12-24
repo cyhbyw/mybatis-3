@@ -27,27 +27,28 @@ import org.junit.Test;
 
 public class MyBatisTest {
 
-  private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
-    // create an SqlSessionFactory
-    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/call_setters_on_nulls_again/mybatis-config.xml");
-    sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-    reader.close();
-  }
-
-  @Test
-  public void test() {
-    SqlSession session = sqlSessionFactory.openSession();
-    try {
-      ParentBean parentBean = session.selectOne("test");
-      Assert.assertEquals("p1", parentBean.getName());
-//    Assert.assertThat(parentBean.toString(), CoreMatchers.is("ParentBean [name=p1, client=ChildBean [name=null, child=ChildBean [name=null, child=null, beans=null], beans=null]]"));      
-      
-    } finally {
-      session.close();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        // create an SqlSessionFactory
+        Reader reader = Resources
+                .getResourceAsReader("org/apache/ibatis/submitted/call_setters_on_nulls_again/mybatis-config.xml");
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        reader.close();
     }
-  }
+
+    @Test
+    public void test() {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            ParentBean parentBean = session.selectOne("test");
+            Assert.assertEquals("p1", parentBean.getName());
+            //    Assert.assertThat(parentBean.toString(), CoreMatchers.is("ParentBean [name=p1, client=ChildBean [name=null, child=ChildBean [name=null, child=null, beans=null], beans=null]]"));      
+
+        } finally {
+            session.close();
+        }
+    }
 
 }

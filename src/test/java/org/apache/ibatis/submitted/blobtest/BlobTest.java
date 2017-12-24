@@ -40,8 +40,7 @@ public class BlobTest {
 
         try {
             Class.forName("org.hsqldb.jdbcDriver");
-            conn = DriverManager.getConnection("jdbc:hsqldb:mem:blobtest", "sa",
-                    "");
+            conn = DriverManager.getConnection("jdbc:hsqldb:mem:blobtest", "sa", "");
 
             Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/blobtest/CreateDB.sql");
 
@@ -71,7 +70,7 @@ public class BlobTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
             BlobMapper blobMapper = sqlSession.getMapper(BlobMapper.class);
-            
+
             byte[] myblob = new byte[] {1, 2, 3, 4, 5};
             BlobRecord blobRecord = new BlobRecord(1, myblob);
             int rows = blobMapper.insert(blobRecord);
@@ -82,8 +81,8 @@ public class BlobTest {
 
             assertEquals(1, results.size());
             BlobRecord result = results.get(0);
-            assertEquals (blobRecord.getId(), result.getId());
-            assertTrue (blobsAreEqual(blobRecord.getBlob(), result.getBlob()));
+            assertEquals(blobRecord.getId(), result.getId());
+            assertTrue(blobsAreEqual(blobRecord.getBlob(), result.getBlob()));
         } finally {
             sqlSession.close();
         }
@@ -109,8 +108,8 @@ public class BlobTest {
 
             assertEquals(1, results.size());
             BlobRecord result = results.get(0);
-            assertEquals (blobRecord.getId(), result.getId());
-            assertTrue (blobsAreEqual(blobRecord.getBlob(), result.getBlob()));
+            assertEquals(blobRecord.getId(), result.getId());
+            assertTrue(blobsAreEqual(blobRecord.getBlob(), result.getBlob()));
         } finally {
             sqlSession.close();
         }

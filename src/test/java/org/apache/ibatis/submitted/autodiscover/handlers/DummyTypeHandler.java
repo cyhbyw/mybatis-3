@@ -29,8 +29,7 @@ import org.apache.ibatis.type.TypeHandler;
 public class DummyTypeHandler implements TypeHandler<Object> {
 
     @Override
-    public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-    }
+    public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {}
 
     @Override
     public Object getResult(ResultSet rs, String columnName) throws SQLException {

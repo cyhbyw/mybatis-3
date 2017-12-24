@@ -39,58 +39,58 @@ import org.apache.ibatis.logging.LogFactory;
  * @author Eduardo Macarron
  */
 public class VendorDatabaseIdProvider implements DatabaseIdProvider {
-  
-  private static final Log log = LogFactory.getLog(BaseExecutor.class);
 
-  private Properties properties;
+    private static final Log log = LogFactory.getLog(BaseExecutor.class);
 
-  @Override
-  public String getDatabaseId(DataSource dataSource) {
-    if (dataSource == null) {
-      throw new NullPointerException("dataSource cannot be null");
-    }
-    try {
-      return getDatabaseName(dataSource);
-    } catch (Exception e) {
-      log.error("Could not get a databaseId from dataSource", e);
-    }
-    return null;
-  }
+    private Properties properties;
 
-  @Override
-  public void setProperties(Properties p) {
-    this.properties = p;
-  }
-
-  private String getDatabaseName(DataSource dataSource) throws SQLException {
-    String productName = getDatabaseProductName(dataSource);
-    if (this.properties != null) {
-      for (Map.Entry<Object, Object> property : properties.entrySet()) {
-        if (productName.contains((String) property.getKey())) {
-          return (String) property.getValue();
+    @Override
+    public String getDatabaseId(DataSource dataSource) {
+        if (dataSource == null) {
+            throw new NullPointerException("dataSource cannot be null");
         }
-      }
-      // no match, return null
-      return null;
-    }
-    return productName;
-  }
-
-  private String getDatabaseProductName(DataSource dataSource) throws SQLException {
-    Connection con = null;
-    try {
-      con = dataSource.getConnection();
-      DatabaseMetaData metaData = con.getMetaData();
-      return metaData.getDatabaseProductName();
-    } finally {
-      if (con != null) {
         try {
-          con.close();
-        } catch (SQLException e) {
-          // ignored
+            return getDatabaseName(dataSource);
+        } catch (Exception e) {
+            log.error("Could not get a databaseId from dataSource", e);
         }
-      }
+        return null;
     }
-  }
-  
+
+    @Override
+    public void setProperties(Properties p) {
+        this.properties = p;
+    }
+
+    private String getDatabaseName(DataSource dataSource) throws SQLException {
+        String productName = getDatabaseProductName(dataSource);
+        if (this.properties != null) {
+            for (Map.Entry<Object, Object> property : properties.entrySet()) {
+                if (productName.contains((String) property.getKey())) {
+                    return (String) property.getValue();
+                }
+            }
+            // no match, return null
+            return null;
+        }
+        return productName;
+    }
+
+    private String getDatabaseProductName(DataSource dataSource) throws SQLException {
+        Connection con = null;
+        try {
+            con = dataSource.getConnection();
+            DatabaseMetaData metaData = con.getMetaData();
+            return metaData.getDatabaseProductName();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    // ignored
+                }
+            }
+        }
+    }
+
 }

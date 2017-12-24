@@ -22,17 +22,18 @@ import org.junit.rules.ExpectedException;
 
 public class IdConflictTest {
 
-  @Rule
-  public ExpectedException ex = ExpectedException.none();
+    @Rule
+    public ExpectedException ex = ExpectedException.none();
 
-  @Test
-  public void shouldFailOnDuplicatedId() throws Exception {
-    ex.expect(RuntimeException.class);
-    ex.expectMessage("Result Maps collection already contains value for org.apache.ibatis.submitted.results_id.IdConflictMapper.userResult");
+    @Test
+    public void shouldFailOnDuplicatedId() throws Exception {
+        ex.expect(RuntimeException.class);
+        ex.expectMessage(
+                "Result Maps collection already contains value for org.apache.ibatis.submitted.results_id.IdConflictMapper.userResult");
 
-    Configuration configuration = new Configuration();
-    configuration.addMapper(IdConflictMapper.class);
-    configuration.getMappedStatements();
-  }
+        Configuration configuration = new Configuration();
+        configuration.addMapper(IdConflictMapper.class);
+        configuration.getMappedStatements();
+    }
 
 }

@@ -18,30 +18,30 @@ package org.apache.ibatis.submitted.emptycollection;
 import java.util.List;
 
 public class TodoLists {
-  
-  @Override
-  public String toString() {
-    return "TodoLists [id=" + id + ", todoItems=" + todoItems + "]";
-  }
 
-  private int id;
+    @Override
+    public String toString() {
+        return "TodoLists [id=" + id + ", todoItems=" + todoItems + "]";
+    }
 
-  private List<TodoItem> todoItems;
-  
-  public int getId() {
-    return id;
-  }
+    private int id;
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    private List<TodoItem> todoItems;
 
-  public List<TodoItem> getTodoItems() {
-    return todoItems;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public void setTodoItems(List<TodoItem> todoItems) {
-    this.todoItems = todoItems;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<TodoItem> getTodoItems() {
+        return todoItems;
+    }
+
+    public void setTodoItems(List<TodoItem> todoItems) {
+        this.todoItems = todoItems;
+    }
 
 }

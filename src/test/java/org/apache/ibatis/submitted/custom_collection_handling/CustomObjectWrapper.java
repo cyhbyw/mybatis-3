@@ -23,85 +23,85 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 public class CustomObjectWrapper implements org.apache.ibatis.reflection.wrapper.ObjectWrapper {
 
-  private CustomCollection collection;
-  
-  public CustomObjectWrapper(CustomCollection collection){
-    this.collection = collection;
-  }
-  
-  @Override
-  public Object get(PropertyTokenizer prop) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    private CustomCollection collection;
 
-  @Override
-  public void set(PropertyTokenizer prop, Object value) {
-    // TODO Auto-generated method stub
+    public CustomObjectWrapper(CustomCollection collection) {
+        this.collection = collection;
+    }
 
-  }
+    @Override
+    public Object get(PropertyTokenizer prop) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public String findProperty(String name, boolean useCamelCaseMapping) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public void set(PropertyTokenizer prop, Object value) {
+        // TODO Auto-generated method stub
 
-  @Override
-  public String[] getGetterNames() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    }
 
-  @Override
-  public String[] getSetterNames() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public String findProperty(String name, boolean useCamelCaseMapping) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public Class<?> getSetterType(String name) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public String[] getGetterNames() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public Class<?> getGetterType(String name) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public String[] getSetterNames() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public boolean hasSetter(String name) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+    @Override
+    public Class<?> getSetterType(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public boolean hasGetter(String name) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+    @Override
+    public Class<?> getGetterType(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public boolean hasSetter(String name) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-  @Override
-  public boolean isCollection() {
-    return true;
-  }
+    @Override
+    public boolean hasGetter(String name) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-  @Override
-  public void add(Object element) {
-    ((CustomCollection<Object>) collection).add(element);
-  }
+    @Override
+    public MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public <E> void addAll(List<E> element) {
-    ((CustomCollection<Object>) collection).addAll(element);
-  }
+    @Override
+    public boolean isCollection() {
+        return true;
+    }
+
+    @Override
+    public void add(Object element) {
+        ((CustomCollection<Object>) collection).add(element);
+    }
+
+    @Override
+    public <E> void addAll(List<E> element) {
+        ((CustomCollection<Object>) collection).addAll(element);
+    }
 
 }

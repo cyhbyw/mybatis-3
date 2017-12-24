@@ -15,6 +15,14 @@
  */
 package org.apache.ibatis.submitted.cursor_simple;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
@@ -25,14 +33,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 public class CursorSimpleTest {
 
@@ -367,9 +367,9 @@ public class CursorSimpleTest {
             Assert.assertEquals(-1, usersCursor.getCurrentIndex());
 
             List<User> userList = new ArrayList<User>();
-            for (User user : usersCursor){
+            for (User user : usersCursor) {
                 userList.add(user);
-                Assert.assertEquals(userList.size() -1, usersCursor.getCurrentIndex());
+                Assert.assertEquals(userList.size() - 1, usersCursor.getCurrentIndex());
             }
 
             Assert.assertFalse(usersCursor.isOpen());

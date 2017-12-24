@@ -15,7 +15,7 @@
  */
 package org.apache.ibatis.submitted.custom_collection_handling;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.session.SqlSession;
@@ -43,7 +44,8 @@ public class CustomCollectionHandlingTest {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactoryXmlConfig(xmlConfig);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            List<Person> list = sqlSession.selectList("org.apache.ibatis.submitted.custom_collection_handling.PersonMapper.findWithResultMap");
+            List<Person> list = sqlSession.selectList(
+                    "org.apache.ibatis.submitted.custom_collection_handling.PersonMapper.findWithResultMap");
             assertEquals(2, list.size());
             assertEquals(2, list.get(0).getContacts().size());
             assertEquals(1, list.get(1).getContacts().size());
@@ -64,13 +66,13 @@ public class CustomCollectionHandlingTest {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactoryXmlConfig(xmlConfig);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            List<Person> list = sqlSession.selectList("org.apache.ibatis.submitted.custom_collection_handling.PersonMapper.findWithSelect");
+            List<Person> list = sqlSession
+                    .selectList("org.apache.ibatis.submitted.custom_collection_handling.PersonMapper.findWithSelect");
             assertEquals(2, list.size());
             assertEquals(2, list.get(0).getContacts().size());
             assertEquals(1, list.get(1).getContacts().size());
             assertEquals("3 Wall Street", list.get(0).getContacts().get(1).getAddress());
-        } 
-        finally {
+        } finally {
             sqlSession.close();
         }
     }
@@ -88,7 +90,8 @@ public class CustomCollectionHandlingTest {
 
     private static void initDb(Connection conn) throws IOException, SQLException {
         try {
-            Reader scriptReader = Resources.getResourceAsReader("org/apache/ibatis/submitted/custom_collection_handling/CreateDB.sql");
+            Reader scriptReader = Resources
+                    .getResourceAsReader("org/apache/ibatis/submitted/custom_collection_handling/CreateDB.sql");
             ScriptRunner runner = new ScriptRunner(conn);
             runner.setLogWriter(null);
             runner.setErrorLogWriter(new PrintWriter(System.err));

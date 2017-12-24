@@ -56,7 +56,7 @@ public class RefCursorTest {
             Map<String, Object> parameter = new HashMap<String, Object>();
             parameter.put("orderId", 1);
             mapper.getOrder1(parameter);
-            
+
             assertNotNull(parameter.get("order"));
             List<Order> orders = (List<Order>) parameter.get("order");
             assertEquals(1, orders.size());
@@ -78,7 +78,7 @@ public class RefCursorTest {
             Map<String, Object> parameter = new HashMap<String, Object>();
             parameter.put("orderId", 1);
             mapper.getOrder2(parameter);
-            
+
             assertNotNull(parameter.get("order"));
             List<Order> orders = (List<Order>) parameter.get("order");
             assertEquals(1, orders.size());

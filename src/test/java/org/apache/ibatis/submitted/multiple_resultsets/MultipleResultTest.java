@@ -44,25 +44,26 @@ import org.junit.Test;
 @Ignore("See setupdb.txt for instructions on how to run the tests in this class")
 public class MultipleResultTest {
 
-  private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
-    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/multiple_resultsets/mybatis-config.xml");
-    sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-    reader.close();
-  }
-
-  @Test
-  public void shouldGetMultipleResultSetsWithOneStatement() throws IOException {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      List<?> usersAndGroups = mapper.getUsersAndGroups();
-      Assert.assertEquals(2, usersAndGroups.size());
-    } finally {
-      sqlSession.close();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        Reader reader =
+                Resources.getResourceAsReader("org/apache/ibatis/submitted/multiple_resultsets/mybatis-config.xml");
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        reader.close();
     }
-  }
+
+    @Test
+    public void shouldGetMultipleResultSetsWithOneStatement() throws IOException {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Mapper mapper = sqlSession.getMapper(Mapper.class);
+            List<?> usersAndGroups = mapper.getUsersAndGroups();
+            Assert.assertEquals(2, usersAndGroups.size());
+        } finally {
+            sqlSession.close();
+        }
+    }
 
 }

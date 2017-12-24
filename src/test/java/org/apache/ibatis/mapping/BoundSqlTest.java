@@ -15,7 +15,8 @@
  */
 package org.apache.ibatis.mapping;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,33 +28,35 @@ import org.junit.Test;
 
 public class BoundSqlTest {
 
-  @Test
-  public void testHasAdditionalParameter() throws Exception {
-    List<ParameterMapping> params = Collections.emptyList();
-    BoundSql boundSql = new BoundSql(new Configuration(), "some sql", params, new Object());
+    @Test
+    public void testHasAdditionalParameter() throws Exception {
+        List<ParameterMapping> params = Collections.emptyList();
+        BoundSql boundSql = new BoundSql(new Configuration(), "some sql", params, new Object());
 
-    Map<String, String> map = new HashMap<String, String>();
-    map.put("key1", "value1");
-    boundSql.setAdditionalParameter("map", map);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("key1", "value1");
+        boundSql.setAdditionalParameter("map", map);
 
-    Person bean = new Person();
-    bean.id = 1;
-    boundSql.setAdditionalParameter("person", bean);
+        Person bean = new Person();
+        bean.id = 1;
+        boundSql.setAdditionalParameter("person", bean);
 
-    assertFalse(boundSql.hasAdditionalParameter("pet"));
-    assertFalse(boundSql.hasAdditionalParameter("pet.name"));
+        assertFalse(boundSql.hasAdditionalParameter("pet"));
+        assertFalse(boundSql.hasAdditionalParameter("pet.name"));
 
-    assertTrue(boundSql.hasAdditionalParameter("map"));
-    assertTrue(boundSql.hasAdditionalParameter("map.key1"));
-    assertTrue("should return true even if the child property does not exists.", boundSql.hasAdditionalParameter("map.key2"));
+        assertTrue(boundSql.hasAdditionalParameter("map"));
+        assertTrue(boundSql.hasAdditionalParameter("map.key1"));
+        assertTrue("should return true even if the child property does not exists.",
+                boundSql.hasAdditionalParameter("map.key2"));
 
-    assertTrue(boundSql.hasAdditionalParameter("person"));
-    assertTrue(boundSql.hasAdditionalParameter("person.id"));
-    assertTrue("should return true even if the child property does not exists.", boundSql.hasAdditionalParameter("person.name"));
-  }
+        assertTrue(boundSql.hasAdditionalParameter("person"));
+        assertTrue(boundSql.hasAdditionalParameter("person.id"));
+        assertTrue("should return true even if the child property does not exists.",
+                boundSql.hasAdditionalParameter("person.name"));
+    }
 
-  public static class Person {
-    public Integer id;
-  }
+    public static class Person {
+        public Integer id;
+    }
 
 }

@@ -22,8 +22,7 @@ package org.apache.ibatis.submitted.enumtypehandler_on_annotation;
 public class Person {
 
     enum PersonType {
-        PERSON,
-        EMPLOYEE
+        PERSON, EMPLOYEE
     }
 
     private Integer id;
@@ -31,8 +30,7 @@ public class Person {
     private String lastName;
     private PersonType personType;
 
-    public Person() {
-    }
+    public Person() {}
 
     public Person(Integer id, String firstName, String lastName, PersonType personType) {
         this.id = id;
@@ -44,24 +42,31 @@ public class Person {
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public PersonType getPersonType() {
         return personType;
     }
+
     public void setPersonType(PersonType personType) {
         this.personType = personType;
     }

@@ -23,8 +23,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 public class ResultMapException extends PersistenceException {
     private static final long serialVersionUID = 3270932060569707623L;
 
-    public ResultMapException() {
-    }
+    public ResultMapException() {}
 
     public ResultMapException(String message) {
         super(message);

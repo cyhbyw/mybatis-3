@@ -26,53 +26,53 @@ import org.junit.Test;
 
 public class SqlTimetampTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Timestamp> TYPE_HANDLER = new SqlTimestampTypeHandler();
-  private static final java.sql.Timestamp SQL_TIME = new java.sql.Timestamp(new Date().getTime());
+    private static final TypeHandler<Timestamp> TYPE_HANDLER = new SqlTimestampTypeHandler();
+    private static final java.sql.Timestamp SQL_TIME = new java.sql.Timestamp(new Date().getTime());
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, SQL_TIME, null);
-    verify(ps).setTimestamp(1, SQL_TIME);
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, SQL_TIME, null);
+        verify(ps).setTimestamp(1, SQL_TIME);
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    when(rs.getTimestamp("column")).thenReturn(SQL_TIME);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(SQL_TIME, TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        when(rs.getTimestamp("column")).thenReturn(SQL_TIME);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(SQL_TIME, TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    when(rs.getTimestamp(1)).thenReturn(SQL_TIME);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(SQL_TIME, TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        when(rs.getTimestamp(1)).thenReturn(SQL_TIME);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(SQL_TIME, TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getTimestamp(1)).thenReturn(SQL_TIME);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(SQL_TIME, TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getTimestamp(1)).thenReturn(SQL_TIME);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(SQL_TIME, TYPE_HANDLER.getResult(cs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        // Unnecessary
+    }
 
 }

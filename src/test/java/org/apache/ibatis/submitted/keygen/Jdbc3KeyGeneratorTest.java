@@ -15,7 +15,7 @@
  */
 package org.apache.ibatis.submitted.keygen;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.Reader;
 import java.sql.Connection;
@@ -35,42 +35,42 @@ import org.junit.Test;
  */
 public class Jdbc3KeyGeneratorTest {
 
-  private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
-    // create an SqlSessionFactory
-    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/keygen/MapperConfig.xml");
-    sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-    reader.close();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        // create an SqlSessionFactory
+        Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/keygen/MapperConfig.xml");
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        reader.close();
 
-    // populate in-memory database
-    SqlSession session = sqlSessionFactory.openSession();
-    Connection conn = session.getConnection();
-    reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/keygen/CreateDB.sql");
-    ScriptRunner runner = new ScriptRunner(conn);
-    runner.setLogWriter(null);
-    runner.runScript(reader);
-    reader.close();
-    session.close();
-  }
-
-  @Test
-  public void shouldInsertListAndRetrieveId() throws Exception {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
-      List<Country> countries = new ArrayList<Country>();
-      countries.add(new Country("China", "CN"));
-      countries.add(new Country("United Kiongdom", "GB"));
-      countries.add(new Country("United States of America", "US"));
-      mapper.insertList(countries);
-      for (Country country : countries) {
-        assertNotNull(country.getId());
-      }
-    } finally {
-      sqlSession.rollback();
-      sqlSession.close();
+        // populate in-memory database
+        SqlSession session = sqlSessionFactory.openSession();
+        Connection conn = session.getConnection();
+        reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/keygen/CreateDB.sql");
+        ScriptRunner runner = new ScriptRunner(conn);
+        runner.setLogWriter(null);
+        runner.runScript(reader);
+        reader.close();
+        session.close();
     }
-  }
+
+    @Test
+    public void shouldInsertListAndRetrieveId() throws Exception {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
+            List<Country> countries = new ArrayList<Country>();
+            countries.add(new Country("China", "CN"));
+            countries.add(new Country("United Kiongdom", "GB"));
+            countries.add(new Country("United States of America", "US"));
+            mapper.insertList(countries);
+            for (Country country : countries) {
+                assertNotNull(country.getId());
+            }
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
 }

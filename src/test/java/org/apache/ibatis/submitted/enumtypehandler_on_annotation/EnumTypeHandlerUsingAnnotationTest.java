@@ -15,6 +15,14 @@
  */
 package org.apache.ibatis.submitted.enumtypehandler_on_annotation;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.io.Reader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.session.SqlSession;
@@ -24,13 +32,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.io.Reader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.core.Is.*;
 
 /**
  * Tests for type handler of enum using annotations.
@@ -56,7 +57,8 @@ public class EnumTypeHandlerUsingAnnotationTest {
             Class.forName("org.hsqldb.jdbcDriver");
             conn = DriverManager.getConnection("jdbc:hsqldb:mem:enumtypehandler_on_annotation", "sa", "");
 
-            Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/enumtypehandler_on_annotation/CreateDB.sql");
+            Reader reader = Resources
+                    .getResourceAsReader("org/apache/ibatis/submitted/enumtypehandler_on_annotation/CreateDB.sql");
 
             ScriptRunner runner = new ScriptRunner(conn);
             runner.setLogWriter(null);
@@ -65,7 +67,8 @@ public class EnumTypeHandlerUsingAnnotationTest {
             conn.commit();
             reader.close();
 
-            reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/enumtypehandler_on_annotation/mybatis-config.xml");
+            reader = Resources.getResourceAsReader(
+                    "org/apache/ibatis/submitted/enumtypehandler_on_annotation/mybatis-config.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             sqlSessionFactory.getConfiguration().getMapperRegistry().addMapper(PersonMapper.class);
             reader.close();

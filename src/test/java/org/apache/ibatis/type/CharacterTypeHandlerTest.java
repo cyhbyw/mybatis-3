@@ -24,67 +24,67 @@ import org.junit.Test;
 
 public class CharacterTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Character> TYPE_HANDLER = new CharacterTypeHandler();
+    private static final TypeHandler<Character> TYPE_HANDLER = new CharacterTypeHandler();
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, 'a', null);
-    verify(ps).setString(1, "a");
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, 'a', null);
+        verify(ps).setString(1, "a");
+    }
 
-  @Test
-  public void shouldSetNullParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, null, JdbcType.VARCHAR);
-    verify(ps).setNull(1, JdbcType.VARCHAR.TYPE_CODE);
-  }
+    @Test
+    public void shouldSetNullParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, null, JdbcType.VARCHAR);
+        verify(ps).setNull(1, JdbcType.VARCHAR.TYPE_CODE);
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    when(rs.getString("column")).thenReturn("a");
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Character('a'), TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        when(rs.getString("column")).thenReturn("a");
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Character('a'), TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    when(rs.getString("column")).thenReturn(null);
-    when(rs.wasNull()).thenReturn(true);
-    assertNull(TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        when(rs.getString("column")).thenReturn(null);
+        when(rs.wasNull()).thenReturn(true);
+        assertNull(TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    when(rs.getString(1)).thenReturn("a");
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Character('a'), TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        when(rs.getString(1)).thenReturn("a");
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Character('a'), TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    when(rs.getString(1)).thenReturn(null);
-    when(rs.wasNull()).thenReturn(true);
-    assertNull(TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        when(rs.getString(1)).thenReturn(null);
+        when(rs.wasNull()).thenReturn(true);
+        assertNull(TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getString(1)).thenReturn("a");
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(new Character('a'), TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getString(1)).thenReturn("a");
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(new Character('a'), TYPE_HANDLER.getResult(cs, 1));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    when(cs.getString("column")).thenReturn(null);
-    when(cs.wasNull()).thenReturn(true);
-    assertNull(TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        when(cs.getString("column")).thenReturn(null);
+        when(cs.wasNull()).thenReturn(true);
+        assertNull(TYPE_HANDLER.getResult(cs, 1));
+    }
 
 }

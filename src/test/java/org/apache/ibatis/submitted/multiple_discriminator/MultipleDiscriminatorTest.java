@@ -29,19 +29,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class MultipleDiscriminatorTest {
-    
+
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     @BeforeClass
     public static void initDatabase() throws Exception {
         Connection conn = null;
 
         try {
             Class.forName("org.hsqldb.jdbcDriver");
-            conn = DriverManager.getConnection("jdbc:hsqldb:mem:multiple_discriminator", "sa",
-                    "");
+            conn = DriverManager.getConnection("jdbc:hsqldb:mem:multiple_discriminator", "sa", "");
 
-            Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/multiple_discriminator/CreateDB.sql");
+            Reader reader =
+                    Resources.getResourceAsReader("org/apache/ibatis/submitted/multiple_discriminator/CreateDB.sql");
 
             ScriptRunner runner = new ScriptRunner(conn);
             runner.setLogWriter(null);
@@ -50,7 +50,8 @@ public class MultipleDiscriminatorTest {
             conn.commit();
             reader.close();
 
-            reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/multiple_discriminator/ibatisConfig.xml");
+            reader = Resources
+                    .getResourceAsReader("org/apache/ibatis/submitted/multiple_discriminator/ibatisConfig.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             reader.close();
         } finally {
@@ -59,7 +60,7 @@ public class MultipleDiscriminatorTest {
             }
         }
     }
-    
+
     @Test
     public void testMultipleDiscriminator() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -67,8 +68,9 @@ public class MultipleDiscriminatorTest {
         Person person = personMapper.get(1L);
         Assert.assertNotNull("Person must not be null", person);
         Assert.assertEquals("Person must be a director", Director.class, person.getClass());
-      sqlSession.close();
+        sqlSession.close();
     }
+
     @Test
     public void testMultipleDiscriminator2() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -76,14 +78,15 @@ public class MultipleDiscriminatorTest {
         Person person = personMapper.get2(1L);
         Assert.assertNotNull("Person must not be null", person);
         Assert.assertEquals("Person must be a director", Director.class, person.getClass());
-      sqlSession.close();
+        sqlSession.close();
     }
-    @Test(timeout=20000)
+
+    @Test(timeout = 20000)
     public void testMultipleDiscriminatorLoop() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         PersonMapper personMapper = sqlSession.getMapper(PersonMapper.class);
         personMapper.getLoop();
-      sqlSession.close();
-      
+        sqlSession.close();
+
     }
 }

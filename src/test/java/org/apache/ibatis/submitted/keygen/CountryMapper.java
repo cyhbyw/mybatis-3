@@ -19,6 +19,6 @@ import java.util.List;
 
 public interface CountryMapper {
 
-  int insertList(List<Country> countries);
+    int insertList(List<Country> countries);
 
 }

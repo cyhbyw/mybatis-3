@@ -15,6 +15,15 @@
  */
 package org.apache.ibatis.session;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.sql.DataSource;
+
 import org.apache.ibatis.BaseDataTest;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.domain.blog.Author;
@@ -27,14 +36,6 @@ import org.apache.log4j.varia.NullAppender;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
-
 /**
  * Tests for specify the behavior when detects an unknown column (or unknown property type) of automatic mapping target.
  *
@@ -44,21 +45,12 @@ import static org.junit.Assert.assertThat;
 public class AutoMappingUnknownColumnBehaviorTest {
 
     interface Mapper {
-        @Select({
-                "SELECT ",
-                "  ID,",
-                "  USERNAME as USERNAMEEEE,", // unknown column
-                "  PASSWORD,",
-                "  EMAIL,",
-                "  BIO",
-                "FROM AUTHOR WHERE ID = #{id}"})
+        @Select({"SELECT ", "  ID,", "  USERNAME as USERNAMEEEE,", // unknown column
+                "  PASSWORD,", "  EMAIL,", "  BIO", "FROM AUTHOR WHERE ID = #{id}"})
         Author selectAuthor(int id);
 
-        @Select({
-                "SELECT ",
-                "  ID,", // unknown property type
-                "  USERNAME",
-                "FROM AUTHOR WHERE ID = #{id}"})
+        @Select({"SELECT ", "  ID,", // unknown property type
+                "  USERNAME", "FROM AUTHOR WHERE ID = #{id}"})
         SimpleAuthor selectSimpleAuthor(int id);
     }
 
@@ -120,7 +112,8 @@ public class AutoMappingUnknownColumnBehaviorTest {
 
     @Test
     public void warningCauseByUnknownPropertyType() {
-        sqlSessionFactory.getConfiguration().setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.WARNING);
+        sqlSessionFactory.getConfiguration()
+                .setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.WARNING);
 
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -129,7 +122,8 @@ public class AutoMappingUnknownColumnBehaviorTest {
             SimpleAuthor author = mapper.selectSimpleAuthor(101);
             assertThat(author.getId(), nullValue());
             assertThat(author.getUsername(), is("jim"));
-            assertThat(LastEventSavedAppender.event.getMessage().toString(), is("Unknown column is detected on 'org.apache.ibatis.session.AutoMappingUnknownColumnBehaviorTest$Mapper.selectSimpleAuthor' auto-mapping. Mapping parameters are [columnName=ID,propertyName=id,propertyType=java.util.concurrent.atomic.AtomicInteger]"));
+            assertThat(LastEventSavedAppender.event.getMessage().toString(), is(
+                    "Unknown column is detected on 'org.apache.ibatis.session.AutoMappingUnknownColumnBehaviorTest$Mapper.selectSimpleAuthor' auto-mapping. Mapping parameters are [columnName=ID,propertyName=id,propertyType=java.util.concurrent.atomic.AtomicInteger]"));
 
         } finally {
             session.close();
@@ -139,7 +133,8 @@ public class AutoMappingUnknownColumnBehaviorTest {
 
     @Test
     public void failingCauseByUnknownColumn() {
-        sqlSessionFactory.getConfiguration().setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.FAILING);
+        sqlSessionFactory.getConfiguration()
+                .setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior.FAILING);
 
         SqlSession session = sqlSessionFactory.openSession();
 
@@ -148,7 +143,8 @@ public class AutoMappingUnknownColumnBehaviorTest {
             mapper.selectAuthor(101);
         } catch (PersistenceException e) {
             assertThat(e.getCause(), instanceOf(SqlSessionException.class));
-            assertThat(e.getCause().getMessage(), is("Unknown column is detected on 'org.apache.ibatis.session.AutoMappingUnknownColumnBehaviorTest$Mapper.selectAuthor' auto-mapping. Mapping parameters are [columnName=USERNAMEEEE,propertyName=USERNAMEEEE,propertyType=null]"));
+            assertThat(e.getCause().getMessage(), is(
+                    "Unknown column is detected on 'org.apache.ibatis.session.AutoMappingUnknownColumnBehaviorTest$Mapper.selectAuthor' auto-mapping. Mapping parameters are [columnName=USERNAMEEEE,propertyName=USERNAMEEEE,propertyType=null]"));
         } finally {
             session.close();
         }

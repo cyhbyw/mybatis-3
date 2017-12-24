@@ -15,6 +15,13 @@
  */
 package org.apache.ibatis.scripting.defaults;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +30,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.builder.StaticSqlSource;
-import org.apache.ibatis.mapping.*;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.mapping.ResultMapping;
+import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeException;
@@ -32,11 +44,6 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 /**
  * DefaultParameterHandlerTest
  *
@@ -44,44 +51,48 @@ import static org.mockito.Mockito.when;
  */
 public class DefaultParameterHandlerTest {
 
-  @Test
-  public void setParametersThrowsProperException() throws SQLException {
-    final MappedStatement mappedStatement = getMappedStatement();
-    final Object parameterObject = null;
-    final BoundSql boundSql = mock(BoundSql.class);
+    @Test
+    public void setParametersThrowsProperException() throws SQLException {
+        final MappedStatement mappedStatement = getMappedStatement();
+        final Object parameterObject = null;
+        final BoundSql boundSql = mock(BoundSql.class);
 
-    TypeHandler<String> typeHandler = mock(TypeHandler.class);
-    doThrow(new SQLException("foo")).when(typeHandler).setParameter(any(PreparedStatement.class), anyInt(), anyString(), any(JdbcType.class));
-    ParameterMapping parameterMapping = new ParameterMapping.Builder(mappedStatement.getConfiguration(), "prop", typeHandler).build();
-    List<ParameterMapping> parameterMappings = Collections.singletonList(parameterMapping);
-    when(boundSql.getParameterMappings()).thenReturn(parameterMappings);
+        TypeHandler<String> typeHandler = mock(TypeHandler.class);
+        doThrow(new SQLException("foo")).when(typeHandler).setParameter(any(PreparedStatement.class), anyInt(),
+                anyString(), any(JdbcType.class));
+        ParameterMapping parameterMapping =
+                new ParameterMapping.Builder(mappedStatement.getConfiguration(), "prop", typeHandler).build();
+        List<ParameterMapping> parameterMappings = Collections.singletonList(parameterMapping);
+        when(boundSql.getParameterMappings()).thenReturn(parameterMappings);
 
-    DefaultParameterHandler defaultParameterHandler = new DefaultParameterHandler(mappedStatement, parameterObject, boundSql);
+        DefaultParameterHandler defaultParameterHandler =
+                new DefaultParameterHandler(mappedStatement, parameterObject, boundSql);
 
-    PreparedStatement ps = mock(PreparedStatement.class);
-    try {
-      defaultParameterHandler.setParameters(ps);
-      Assert.fail("Should have thrown TypeException");
-    } catch (Exception e) {
-      Assert.assertTrue("expected TypeException", e instanceof TypeException);
-      Assert.assertTrue("", e.getMessage().contains("mapping: ParameterMapping"));
+        PreparedStatement ps = mock(PreparedStatement.class);
+        try {
+            defaultParameterHandler.setParameters(ps);
+            Assert.fail("Should have thrown TypeException");
+        } catch (Exception e) {
+            Assert.assertTrue("expected TypeException", e instanceof TypeException);
+            Assert.assertTrue("", e.getMessage().contains("mapping: ParameterMapping"));
+        }
+
     }
 
-  }
-
-  MappedStatement getMappedStatement() {
-    final Configuration config = new Configuration();
-    final TypeHandlerRegistry registry = config.getTypeHandlerRegistry();
-    return new MappedStatement.Builder(config, "testSelect", new StaticSqlSource(config, "some select statement"), SqlCommandType.SELECT).resultMaps(
-        new ArrayList<ResultMap>() {
-          {
-            add(new ResultMap.Builder(config, "testMap", HashMap.class, new ArrayList<ResultMapping>() {
-              {
-                add(new ResultMapping.Builder(config, "cOlUmN1", "CoLuMn1", registry.getTypeHandler(Integer.class)).build());
-              }
-            }).build());
-          }
-        }).build();
-  }
+    MappedStatement getMappedStatement() {
+        final Configuration config = new Configuration();
+        final TypeHandlerRegistry registry = config.getTypeHandlerRegistry();
+        return new MappedStatement.Builder(config, "testSelect", new StaticSqlSource(config, "some select statement"),
+                SqlCommandType.SELECT).resultMaps(new ArrayList<ResultMap>() {
+                    {
+                        add(new ResultMap.Builder(config, "testMap", HashMap.class, new ArrayList<ResultMapping>() {
+                            {
+                                add(new ResultMapping.Builder(config, "cOlUmN1", "CoLuMn1",
+                                        registry.getTypeHandler(Integer.class)).build());
+                            }
+                        }).build());
+                    }
+                }).build();
+    }
 
 }

@@ -23,52 +23,52 @@ import org.junit.Test;
 
 public class FloatTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Float> TYPE_HANDLER = new FloatTypeHandler();
+    private static final TypeHandler<Float> TYPE_HANDLER = new FloatTypeHandler();
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, 100f, null);
-    verify(ps).setFloat(1, 100f);
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, 100f, null);
+        verify(ps).setFloat(1, 100f);
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    when(rs.getFloat("column")).thenReturn(100f);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Float(100f), TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        when(rs.getFloat("column")).thenReturn(100f);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Float(100f), TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    when(rs.getFloat(1)).thenReturn(100f);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Float(100f), TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        when(rs.getFloat(1)).thenReturn(100f);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Float(100f), TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getFloat(1)).thenReturn(100f);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(new Float(100f), TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getFloat(1)).thenReturn(100f);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(new Float(100f), TYPE_HANDLER.getResult(cs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        // Unnecessary
+    }
 
 }

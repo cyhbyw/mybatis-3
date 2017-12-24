@@ -15,39 +15,39 @@
  */
 package org.apache.ibatis.submitted.duplicate_resource_loaded;
 
-import org.junit.Assert;
+import java.io.Reader;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.BaseDataTest;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.Reader;
-import java.util.List;
-import java.util.Map;
-
 public class DuplicateResourceTest extends BaseDataTest {
 
-  @Before
-  public void setup() throws Exception {
-    BaseDataTest.createBlogDataSource();
-  }
-
-  @Test
-  public void shouldDemonstrateDuplicateResourceIssue() throws Exception {
-    final String resource = "org/apache/ibatis/submitted/duplicate_resource_loaded/Config.xml";
-    final Reader reader = Resources.getResourceAsReader(resource);
-    final SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-    final SqlSessionFactory factory = builder.build(reader);
-    final SqlSession sqlSession = factory.openSession();
-    try {
-      final Mapper mapper = sqlSession.getMapper(Mapper.class);
-      final List<Map<String, Object>> list = mapper.selectAllBlogs();
-      Assert.assertEquals(2,list.size());
-    } finally {
-      sqlSession.close();
+    @Before
+    public void setup() throws Exception {
+        BaseDataTest.createBlogDataSource();
     }
-  }
+
+    @Test
+    public void shouldDemonstrateDuplicateResourceIssue() throws Exception {
+        final String resource = "org/apache/ibatis/submitted/duplicate_resource_loaded/Config.xml";
+        final Reader reader = Resources.getResourceAsReader(resource);
+        final SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        final SqlSessionFactory factory = builder.build(reader);
+        final SqlSession sqlSession = factory.openSession();
+        try {
+            final Mapper mapper = sqlSession.getMapper(Mapper.class);
+            final List<Map<String, Object>> list = mapper.selectAllBlogs();
+            Assert.assertEquals(2, list.size());
+        } finally {
+            sqlSession.close();
+        }
+    }
 }

@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface SelectProvider {
-  Class<?> type();
+    Class<?> type();
 
-  String method();
+    String method();
 }

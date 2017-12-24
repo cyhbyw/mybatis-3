@@ -20,12 +20,11 @@ import org.junit.Test;
 
 public class BatchExecutorTest extends BaseExecutorTest {
 
-  @Test
-  public void dummy() {
-  }
+    @Test
+    public void dummy() {}
 
-  @Override
-  protected Executor createExecutor(Transaction transaction) {
-    return new BatchExecutor(config,transaction);
-  }
+    @Override
+    protected Executor createExecutor(Transaction transaction) {
+        return new BatchExecutor(config, transaction);
+    }
 }

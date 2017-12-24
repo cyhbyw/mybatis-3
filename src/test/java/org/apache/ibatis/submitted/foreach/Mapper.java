@@ -19,13 +19,13 @@ import java.util.List;
 
 public interface Mapper {
 
-  User getUser(User user);
+    User getUser(User user);
 
-  int countByUserList(List<User> users);
+    int countByUserList(List<User> users);
 
-  int countByBestFriend(List<User> users);
+    int countByBestFriend(List<User> users);
 
-  String selectWithNullItemCheck(List<User> users);
+    String selectWithNullItemCheck(List<User> users);
 
-  int typoInItemProperty(List<User> users);
+    int typoInItemProperty(List<User> users);
 }

@@ -29,19 +29,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class FlushStatementNpeTest {
-    
+
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     @BeforeClass
     public static void initDatabase() throws Exception {
         Connection conn = null;
 
         try {
             Class.forName("org.hsqldb.jdbcDriver");
-            conn = DriverManager.getConnection("jdbc:hsqldb:mem:flush_statement_npe", "sa",
-                    "");
+            conn = DriverManager.getConnection("jdbc:hsqldb:mem:flush_statement_npe", "sa", "");
 
-            Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/flush_statement_npe/CreateDB.sql");
+            Reader reader =
+                    Resources.getResourceAsReader("org/apache/ibatis/submitted/flush_statement_npe/CreateDB.sql");
 
             ScriptRunner runner = new ScriptRunner(conn);
             runner.setLogWriter(null);
@@ -59,7 +59,7 @@ public class FlushStatementNpeTest {
             }
         }
     }
-    
+
     @Test
     public void testSameUpdateAfterCommitSimple() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.SIMPLE);
@@ -67,11 +67,11 @@ public class FlushStatementNpeTest {
             PersonMapper personMapper = sqlSession.getMapper(PersonMapper.class);
             Person person = personMapper.selectById(1);
             person.setFirstName("Simone");
-            
+
             // Execute first update then commit.
             personMapper.update(person);
             sqlSession.commit();
-            
+
             // Execute same update a second time. This used to raise an NPE.
             personMapper.update(person);
             sqlSession.commit();
@@ -79,6 +79,7 @@ public class FlushStatementNpeTest {
             sqlSession.close();
         }
     }
+
     @Test
     public void testSameUpdateAfterCommitReuse() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.REUSE);
@@ -86,11 +87,11 @@ public class FlushStatementNpeTest {
             PersonMapper personMapper = sqlSession.getMapper(PersonMapper.class);
             Person person = personMapper.selectById(1);
             person.setFirstName("Simone");
-            
+
             // Execute first update then commit.
             personMapper.update(person);
             sqlSession.commit();
-            
+
             // Execute same update a second time. This used to raise an NPE.
             personMapper.update(person);
             sqlSession.commit();
@@ -98,6 +99,7 @@ public class FlushStatementNpeTest {
             sqlSession.close();
         }
     }
+
     @Test
     public void testSameUpdateAfterCommitBatch() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
@@ -105,11 +107,11 @@ public class FlushStatementNpeTest {
             PersonMapper personMapper = sqlSession.getMapper(PersonMapper.class);
             Person person = personMapper.selectById(1);
             person.setFirstName("Simone");
-            
+
             // Execute first update then commit.
             personMapper.update(person);
             sqlSession.commit();
-            
+
             // Execute same update a second time. This used to raise an NPE.
             personMapper.update(person);
             sqlSession.commit();

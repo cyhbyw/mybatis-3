@@ -27,24 +27,24 @@ import org.apache.ibatis.annotations.Select;
 @CacheNamespace
 public interface PersonMapper {
 
-  @Insert("insert into person (id, firstname, lastname) values (#{id}, #{firstname}, #{lastname})")
-  public void create(Person person);
+    @Insert("insert into person (id, firstname, lastname) values (#{id}, #{firstname}, #{lastname})")
+    public void create(Person person);
 
-  @Insert("insert into person (id, firstname, lastname) values (#{id}, #{firstname}, #{lastname})")
-  @Options
-  public void createWithOptions(Person person);
+    @Insert("insert into person (id, firstname, lastname) values (#{id}, #{firstname}, #{lastname})")
+    @Options
+    public void createWithOptions(Person person);
 
-  @Insert("insert into person (id, firstname, lastname) values (#{id}, #{firstname}, #{lastname})")
-  @Options(flushCache = FlushCachePolicy.FALSE)
-  public void createWithoutFlushCache(Person person);
+    @Insert("insert into person (id, firstname, lastname) values (#{id}, #{firstname}, #{lastname})")
+    @Options(flushCache = FlushCachePolicy.FALSE)
+    public void createWithoutFlushCache(Person person);
 
-  @Delete("delete from person where id = #{id}")
-  public void delete(int id);
+    @Delete("delete from person where id = #{id}")
+    public void delete(int id);
 
-  @Select("select id, firstname, lastname from person")
-  public List<Person> findAll();
+    @Select("select id, firstname, lastname from person")
+    public List<Person> findAll();
 
-  @Select("select id, firstname, lastname from person")
-  @Options(flushCache = FlushCachePolicy.TRUE)
-  public List<Person> findWithFlushCache();
+    @Select("select id, firstname, lastname from person")
+    @Options(flushCache = FlushCachePolicy.TRUE)
+    public List<Person> findWithFlushCache();
 }

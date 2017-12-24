@@ -32,7 +32,7 @@ import org.junit.Test;
 public class DaoTest {
     private Dao dao;
     private SqlSession sqlSession;
-    
+
     @Before
     public void setUp() throws Exception {
         Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/emptycollection/mybatis-config.xml");
@@ -56,7 +56,7 @@ public class DaoTest {
         final List<TodoLists> actual = dao.selectWithEmptyList();
         Assert.assertEquals(1, actual.size());
         final List<TodoItem> todoItems = actual.get(0).getTodoItems();
-        Assert.assertEquals("expect " + todoItems + " to be empty", 0, todoItems.size());        
+        Assert.assertEquals("expect " + todoItems + " to be empty", 0, todoItems.size());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class DaoTest {
     }
 
     private void checkNonEmptyList(final List<TodoLists> actual) {
-//        Assert.assertEquals("[List(1)=[a description(1), a 2nd description(2)], List(2)=[a description(1)]]", actual.toString());
+        //        Assert.assertEquals("[List(1)=[a description(1), a 2nd description(2)], List(2)=[a description(1)]]", actual.toString());
         Assert.assertEquals(2, actual.size());
 
         Assert.assertEquals(2, actual.get(0).getTodoItems().size());
@@ -85,7 +85,7 @@ public class DaoTest {
         Assert.assertEquals(1, actual.get(1).getTodoItems().size());
         Assert.assertEquals(1, actual.get(1).getTodoItems().get(0).getOrder());
         Assert.assertEquals("a description", actual.get(0).getTodoItems().get(0).getDescription().trim());
-        
+
         // We should have gotten three item objects. The first item from the first list and the first item from
         // the second list have identical properties, but they should be distinct objects
         Assert.assertNotSame(actual.get(0).getTodoItems().get(0), actual.get(1).getTodoItems().get(0));

@@ -28,53 +28,50 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class BatchTest
-{
+public class BatchTest {
 
-  private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSessionFactory sqlSessionFactory;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
-    // create an SqlSessionFactory
-    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/batch_test/mybatis-config.xml");
-    sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-    reader.close();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        // create an SqlSessionFactory
+        Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/batch_test/mybatis-config.xml");
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        reader.close();
 
-    // populate in-memory database
-    SqlSession session = sqlSessionFactory.openSession();
-    Connection conn = session.getConnection();
-    reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/batch_test/CreateDB.sql");
-    ScriptRunner runner = new ScriptRunner(conn);
-    runner.setLogWriter(null);
-    runner.runScript(reader);
-    reader.close();
-    session.close();
-  }
-
-  @Test
-  public void shouldGetAUserNoException() {
-    SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH,false);
-    try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-
-      User user   = mapper.getUser(1);
-
-      user.setId(2);
-      user.setName("User2");
-      mapper.insertUser(user);
-      Assert.assertEquals("Dept1", mapper.getUser(2).getDept().getName());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-
+        // populate in-memory database
+        SqlSession session = sqlSessionFactory.openSession();
+        Connection conn = session.getConnection();
+        reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/batch_test/CreateDB.sql");
+        ScriptRunner runner = new ScriptRunner(conn);
+        runner.setLogWriter(null);
+        runner.runScript(reader);
+        reader.close();
+        session.close();
     }
 
-    finally {
-      sqlSession.commit();
-      sqlSession.close();
+    @Test
+    public void shouldGetAUserNoException() {
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        try {
+            Mapper mapper = sqlSession.getMapper(Mapper.class);
+
+            User user = mapper.getUser(1);
+
+            user.setId(2);
+            user.setName("User2");
+            mapper.insertUser(user);
+            Assert.assertEquals("Dept1", mapper.getUser(2).getDept().getName());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+
+        }
+
+        finally {
+            sqlSession.commit();
+            sqlSession.close();
+        }
     }
-  }
 
 
 

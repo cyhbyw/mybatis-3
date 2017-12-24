@@ -26,63 +26,63 @@ import org.junit.Test;
 
 public class DateOnlyTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Date> TYPE_HANDLER = new DateOnlyTypeHandler();
-  private static final Date DATE = new Date();
-  private static final java.sql.Date SQL_DATE = new java.sql.Date(DATE.getTime());
+    private static final TypeHandler<Date> TYPE_HANDLER = new DateOnlyTypeHandler();
+    private static final Date DATE = new Date();
+    private static final java.sql.Date SQL_DATE = new java.sql.Date(DATE.getTime());
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, DATE, null);
-    verify(ps).setDate(1, new java.sql.Date(DATE.getTime()));
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, DATE, null);
+        verify(ps).setDate(1, new java.sql.Date(DATE.getTime()));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    when(rs.getDate("column")).thenReturn(SQL_DATE);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(DATE, TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        when(rs.getDate("column")).thenReturn(SQL_DATE);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(DATE, TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    when(rs.getDate("column")).thenReturn(null);
-    when(rs.wasNull()).thenReturn(true);
-    assertNull(TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        when(rs.getDate("column")).thenReturn(null);
+        when(rs.wasNull()).thenReturn(true);
+        assertNull(TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    when(rs.getDate(1)).thenReturn(SQL_DATE);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(DATE, TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        when(rs.getDate(1)).thenReturn(SQL_DATE);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(DATE, TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    when(rs.getDate(1)).thenReturn(null);
-    when(rs.wasNull()).thenReturn(true);
-    assertNull(TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        when(rs.getDate(1)).thenReturn(null);
+        when(rs.wasNull()).thenReturn(true);
+        assertNull(TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getDate(1)).thenReturn(SQL_DATE);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(DATE, TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getDate(1)).thenReturn(SQL_DATE);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(DATE, TYPE_HANDLER.getResult(cs, 1));
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    when(cs.getDate(1)).thenReturn(null);
-    when(cs.wasNull()).thenReturn(true);
-    assertNull(TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        when(cs.getDate(1)).thenReturn(null);
+        when(cs.wasNull()).thenReturn(true);
+        assertNull(TYPE_HANDLER.getResult(cs, 1));
+    }
 
 }

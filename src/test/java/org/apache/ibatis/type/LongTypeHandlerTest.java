@@ -23,52 +23,52 @@ import org.junit.Test;
 
 public class LongTypeHandlerTest extends BaseTypeHandlerTest {
 
-  private static final TypeHandler<Long> TYPE_HANDLER = new LongTypeHandler();
+    private static final TypeHandler<Long> TYPE_HANDLER = new LongTypeHandler();
 
-  @Override
-  @Test
-  public void shouldSetParameter() throws Exception {
-    TYPE_HANDLER.setParameter(ps, 1, 100L, null);
-    verify(ps).setLong(1, 100L);
-  }
+    @Override
+    @Test
+    public void shouldSetParameter() throws Exception {
+        TYPE_HANDLER.setParameter(ps, 1, 100L, null);
+        verify(ps).setLong(1, 100L);
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByName() throws Exception {
-    when(rs.getLong("column")).thenReturn(100L);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Long(100L), TYPE_HANDLER.getResult(rs, "column"));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByName() throws Exception {
+        when(rs.getLong("column")).thenReturn(100L);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Long(100L), TYPE_HANDLER.getResult(rs, "column"));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByName() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByName() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromResultSetByPosition() throws Exception {
-    when(rs.getLong(1)).thenReturn(100L);
-    when(rs.wasNull()).thenReturn(false);
-    assertEquals(new Long(100L), TYPE_HANDLER.getResult(rs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromResultSetByPosition() throws Exception {
+        when(rs.getLong(1)).thenReturn(100L);
+        when(rs.wasNull()).thenReturn(false);
+        assertEquals(new Long(100L), TYPE_HANDLER.getResult(rs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromResultSetByPosition() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromResultSetByPosition() throws Exception {
+        // Unnecessary
+    }
 
-  @Override
-  @Test
-  public void shouldGetResultFromCallableStatement() throws Exception {
-    when(cs.getLong(1)).thenReturn(100L);
-    when(cs.wasNull()).thenReturn(false);
-    assertEquals(new Long(100L), TYPE_HANDLER.getResult(cs, 1));
-  }
+    @Override
+    @Test
+    public void shouldGetResultFromCallableStatement() throws Exception {
+        when(cs.getLong(1)).thenReturn(100L);
+        when(cs.wasNull()).thenReturn(false);
+        assertEquals(new Long(100L), TYPE_HANDLER.getResult(cs, 1));
+    }
 
-  @Override
-  public void shouldGetResultNullFromCallableStatement() throws Exception {
-    // Unnecessary
-  }
+    @Override
+    public void shouldGetResultNullFromCallableStatement() throws Exception {
+        // Unnecessary
+    }
 
 }

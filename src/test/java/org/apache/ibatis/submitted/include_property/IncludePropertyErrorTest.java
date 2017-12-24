@@ -21,10 +21,10 @@ import org.junit.Test;
 
 public class IncludePropertyErrorTest {
 
-  @Test(expected = PersistenceException.class)
-  public void shouldFailForDuplicatedPropertyNames() throws Exception {
-    Configuration configuration = new Configuration();
-    configuration.addMapper(DuplicatedIncludePropertiesMapper.class);
-  }
+    @Test(expected = PersistenceException.class)
+    public void shouldFailForDuplicatedPropertyNames() throws Exception {
+        Configuration configuration = new Configuration();
+        configuration.addMapper(DuplicatedIncludePropertiesMapper.class);
+    }
 
 }

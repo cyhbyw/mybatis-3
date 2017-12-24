@@ -19,8 +19,7 @@ public class PostLite {
     private PostLiteId theId;
     private int blogId;
 
-    public PostLite() {
-    }
+    public PostLite() {}
 
     public PostLite(PostLiteId aId, int aBlogId) {
         blogId = aBlogId;

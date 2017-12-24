@@ -15,7 +15,8 @@
  */
 package org.apache.ibatis.submitted.xml_external_ref;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -45,8 +46,8 @@ public class ShortNameTest {
     }
 
     private Configuration getConfiguration() throws IOException {
-        Reader configReader = Resources
-        .getResourceAsReader("org/apache/ibatis/submitted/xml_external_ref/MapperConfig.xml");
+        Reader configReader =
+                Resources.getResourceAsReader("org/apache/ibatis/submitted/xml_external_ref/MapperConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configReader);
         configReader.close();
         return sqlSessionFactory.getConfiguration();

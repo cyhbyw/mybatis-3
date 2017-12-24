@@ -20,13 +20,12 @@ import org.junit.Test;
 
 public class CachingReuseExecutorTest extends BaseExecutorTest {
 
-  @Test
-  public void dummy() {
-  }
+    @Test
+    public void dummy() {}
 
-  @Override
-  protected Executor createExecutor(Transaction transaction) {
-    return new CachingExecutor(new ReuseExecutor(config, transaction));
-  }
+    @Override
+    protected Executor createExecutor(Transaction transaction) {
+        return new CachingExecutor(new ReuseExecutor(config, transaction));
+    }
 
 }

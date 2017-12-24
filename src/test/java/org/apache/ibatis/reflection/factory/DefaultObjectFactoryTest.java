@@ -29,27 +29,28 @@ import org.junit.Test;
  */
 public class DefaultObjectFactoryTest {
 
-  @Test
-  public void instantiateClass() throws Exception {
-    DefaultObjectFactory defaultObjectFactory = new DefaultObjectFactory();
-    TestClass testClass = defaultObjectFactory.instantiateClass(TestClass.class,
-        Arrays.<Class<?>>asList(String.class, Integer.class), Arrays.<Object>asList("foo", 0));
+    @Test
+    public void instantiateClass() throws Exception {
+        DefaultObjectFactory defaultObjectFactory = new DefaultObjectFactory();
+        TestClass testClass = defaultObjectFactory.instantiateClass(TestClass.class,
+                Arrays.<Class<?>>asList(String.class, Integer.class), Arrays.<Object>asList("foo", 0));
 
-    Assert.assertEquals("myInteger didn't match expected", (Integer) 0, testClass.myInteger);
-    Assert.assertEquals("myString didn't match expected", "foo", testClass.myString);
-  }
-
-  @Test
-  public void instantiateClassThrowsProperErrorMsg() {
-    DefaultObjectFactory defaultObjectFactory = new DefaultObjectFactory();
-    try {
-      defaultObjectFactory.instantiateClass(TestClass.class, Collections.<Class<?>>singletonList(String.class), Collections.<Object>singletonList("foo"));
-      Assert.fail("Should have thrown ReflectionException");
-    } catch (Exception e) {
-      Assert.assertTrue("Should be ReflectionException", e instanceof ReflectionException);
-      Assert.assertTrue("Should not have trailing commas in types list", e.getMessage().contains("(String)"));
-      Assert.assertTrue("Should not have trailing commas in values list", e.getMessage().contains("(foo)"));
+        Assert.assertEquals("myInteger didn't match expected", (Integer) 0, testClass.myInteger);
+        Assert.assertEquals("myString didn't match expected", "foo", testClass.myString);
     }
-  }
+
+    @Test
+    public void instantiateClassThrowsProperErrorMsg() {
+        DefaultObjectFactory defaultObjectFactory = new DefaultObjectFactory();
+        try {
+            defaultObjectFactory.instantiateClass(TestClass.class, Collections.<Class<?>>singletonList(String.class),
+                    Collections.<Object>singletonList("foo"));
+            Assert.fail("Should have thrown ReflectionException");
+        } catch (Exception e) {
+            Assert.assertTrue("Should be ReflectionException", e instanceof ReflectionException);
+            Assert.assertTrue("Should not have trailing commas in types list", e.getMessage().contains("(String)"));
+            Assert.assertTrue("Should not have trailing commas in values list", e.getMessage().contains("(foo)"));
+        }
+    }
 
 }
