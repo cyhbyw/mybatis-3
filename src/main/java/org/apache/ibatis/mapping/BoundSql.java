@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ * Copyright 2009-2016 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.mapping;
 
@@ -22,6 +19,8 @@ import java.util.Map;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.session.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An actual SQL String got form an {@link SqlSource} after having processed any dynamic content.
@@ -35,6 +34,7 @@ import org.apache.ibatis.session.Configuration;
  */
 public class BoundSql {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoundSql.class);
     private String sql;
     private List<ParameterMapping> parameterMappings;
     private Object parameterObject;
@@ -43,6 +43,9 @@ public class BoundSql {
 
     public BoundSql(Configuration configuration, String sql, List<ParameterMapping> parameterMappings,
             Object parameterObject) {
+
+        LOGGER.trace("configuration: {}, sql: {}, parameterMappings: {}, parameterObject: {}", configuration, sql,
+                parameterMappings, parameterObject);
         this.sql = sql;
         this.parameterMappings = parameterMappings;
         this.parameterObject = parameterObject;

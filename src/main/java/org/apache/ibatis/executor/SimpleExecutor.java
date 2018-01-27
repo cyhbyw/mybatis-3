@@ -59,6 +59,9 @@ public class SimpleExecutor extends BaseExecutor {
     @Override
     public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler,
             BoundSql boundSql) throws SQLException {
+
+        LOGGER.trace("doQuery(). ms: {}, parameter: {}, rowBounds: {}, resultHandler: {}, boundSql: {}", ms, parameter,
+                rowBounds, resultHandler, boundSql);
         Statement stmt = null;
         try {
             Configuration configuration = ms.getConfiguration();
@@ -86,9 +89,9 @@ public class SimpleExecutor extends BaseExecutor {
     }
 
     private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
-        Statement stmt;
+        LOGGER.trace("handler: {}, statementLog: {}", handler, statementLog);
         Connection connection = getConnection(statementLog);
-        stmt = handler.prepare(connection, transaction.getTimeout());
+        Statement stmt = handler.prepare(connection, transaction.getTimeout());
         handler.parameterize(stmt);
         return stmt;
     }

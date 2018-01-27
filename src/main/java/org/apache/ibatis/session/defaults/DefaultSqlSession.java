@@ -321,6 +321,7 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     private Object wrapCollection(final Object object) {
+        LOGGER.trace("object: {}", object);
         if (object instanceof Collection) {
             StrictMap<Object> map = new StrictMap<Object>();
             map.put("collection", object);

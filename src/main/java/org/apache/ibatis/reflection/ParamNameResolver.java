@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ * Copyright 2009-2016 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 
 package org.apache.ibatis.reflection;
@@ -29,9 +26,12 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ParamNameResolver {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParamNameResolver.class);
     private static final String GENERIC_NAME_PREFIX = "param";
     private static final String PARAMETER_CLASS = "java.lang.reflect.Parameter";
     private static Method GET_NAME = null;
@@ -131,6 +131,7 @@ public class ParamNameResolver {
      * </p>
      */
     public Object getNamedParams(Object[] args) {
+        LOGGER.debug("args: {}", args);
         final int paramCount = names.size();
         if (args == null || paramCount == 0) {
             return null;

@@ -142,6 +142,9 @@ public abstract class BaseExecutor implements Executor {
     @Override
     public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler,
             CacheKey key, BoundSql boundSql) throws SQLException {
+
+        LOGGER.trace("query(). ms: {}, parameter: {}, rowBounds: {}, resultHandler: {}, key: {}, boundSql: {}", ms,
+                parameter, rowBounds, resultHandler, key, boundSql);
         ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
         if (closed) {
             throw new ExecutorException("Executor was closed.");
@@ -323,6 +326,10 @@ public abstract class BaseExecutor implements Executor {
 
     private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds,
             ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+
+        LOGGER.trace(
+                "queryFromDatabase(). ms: {}, parameter: {}, rowBounds: {}, resultHandler: {}, key: {}, boundSql: {}",
+                ms, parameter, rowBounds, resultHandler, key, boundSql);
         List<E> list;
         localCache.putObject(key, EXECUTION_PLACEHOLDER);
         try {

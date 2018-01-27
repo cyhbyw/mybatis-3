@@ -80,6 +80,9 @@ public class CachingExecutor implements Executor {
     @Override
     public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds,
             ResultHandler resultHandler) throws SQLException {
+
+        LOGGER.debug("ms: {}, parameterObject: {}, rowBounds: {}, resultHandler: {}", ms, parameterObject, rowBounds,
+                resultHandler);
         BoundSql boundSql = ms.getBoundSql(parameterObject);
         CacheKey key = createCacheKey(ms, parameterObject, rowBounds, boundSql);
         return query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
@@ -94,8 +97,12 @@ public class CachingExecutor implements Executor {
     @Override
     public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds,
             ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+
+        LOGGER.trace("query(). ms: {}, parameterObject: {}, rowBounds: {}, resultHandler: {}, key: {}, boundSql: {}",
+                ms, parameterObject, rowBounds, resultHandler, key, boundSql);
         Cache cache = ms.getCache();
         if (cache != null) {
+            LOGGER.trace("cache != null");
             flushCacheIfRequired(ms);
             if (ms.isUseCache() && resultHandler == null) {
                 ensureNoOutParams(ms, parameterObject, boundSql);

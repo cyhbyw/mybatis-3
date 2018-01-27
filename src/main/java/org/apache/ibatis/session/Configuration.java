@@ -520,6 +520,9 @@ public class Configuration {
 
     public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject,
             BoundSql boundSql) {
+
+        LOGGER.trace("newParameterHandler(). mappedStatement: {}, parameterObject: {}, boundSql: {}", mappedStatement,
+                parameterObject, boundSql);
         ParameterHandler parameterHandler =
                 mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
         parameterHandler = (ParameterHandler) interceptorChain.pluginAll(parameterHandler);
@@ -528,6 +531,10 @@ public class Configuration {
 
     public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement mappedStatement, RowBounds rowBounds,
             ParameterHandler parameterHandler, ResultHandler resultHandler, BoundSql boundSql) {
+
+        LOGGER.trace(
+                "newResultSetHandler(). executor: {}, mappedStatement: {}, rowBounds: {}, parameterHandler: {}, resultHandler: {}, boundSql: {}",
+                executor, mappedStatement, rowBounds, parameterHandler, resultHandler, boundSql);
         ResultSetHandler resultSetHandler = new DefaultResultSetHandler(executor, mappedStatement, parameterHandler,
                 resultHandler, boundSql, rowBounds);
         resultSetHandler = (ResultSetHandler) interceptorChain.pluginAll(resultSetHandler);
@@ -536,6 +543,10 @@ public class Configuration {
 
     public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement,
             Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+
+        LOGGER.trace(
+                "newStatementHandler(). executor: {}, mappedStatement: {}, parameterObject: {}, rowBounds: {}, resultHandler: {}, boundSql: {}",
+                executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);
         StatementHandler statementHandler = new RoutingStatementHandler(executor, mappedStatement, parameterObject,
                 rowBounds, resultHandler, boundSql);
         statementHandler = (StatementHandler) interceptorChain.pluginAll(statementHandler);

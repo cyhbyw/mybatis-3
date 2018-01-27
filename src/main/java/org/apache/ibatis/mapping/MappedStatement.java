@@ -299,6 +299,7 @@ public final class MappedStatement {
     }
 
     public BoundSql getBoundSql(Object parameterObject) {
+        LOGGER.trace("parameterObject: {}", parameterObject);
         BoundSql boundSql = sqlSource.getBoundSql(parameterObject);
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         if (parameterMappings == null || parameterMappings.isEmpty()) {
@@ -317,6 +318,7 @@ public final class MappedStatement {
             }
         }
 
+        LOGGER.debug("boundSql: {}", boundSql);
         return boundSql;
     }
 

@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ * Copyright 2009-2016 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.executor.resultset;
 
@@ -59,6 +56,8 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
@@ -67,6 +66,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 public class DefaultResultSetHandler implements ResultSetHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultResultSetHandler.class);
     private static final Object DEFERED = new Object();
 
     private final Executor executor;
@@ -173,10 +173,10 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     //
     @Override
     public List<Object> handleResultSets(Statement stmt) throws SQLException {
+        LOGGER.debug("handleResultSets(). stmt: {}", stmt);
+
         ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
-
         final List<Object> multipleResults = new ArrayList<Object>();
-
         int resultSetCount = 0;
         ResultSetWrapper rsw = getFirstResultSet(stmt);
 
@@ -284,6 +284,9 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
     private void handleResultSet(ResultSetWrapper rsw, ResultMap resultMap, List<Object> multipleResults,
             ResultMapping parentMapping) throws SQLException {
+
+        LOGGER.trace("rsw: {}, resultMap: {}, multipleResults: {}, parentMapping: {}", rsw, resultMap, multipleResults,
+                parentMapping);
         try {
             if (parentMapping != null) {
                 handleRowValues(rsw, resultMap, null, RowBounds.DEFAULT, parentMapping);
@@ -313,6 +316,9 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
     public void handleRowValues(ResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler,
             RowBounds rowBounds, ResultMapping parentMapping) throws SQLException {
+
+        LOGGER.trace("rsw: {}, resultMap: {}, resultHandler: {}, rowBounds: {}, parentMapping: {}", rsw, resultMap,
+                resultHandler, rowBounds, parentMapping);
         if (resultMap.hasNestedResultMaps()) {
             ensureNoRowBounds();
             checkResultHandler();
@@ -342,6 +348,9 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
     private void handleRowValuesForSimpleResultMap(ResultSetWrapper rsw, ResultMap resultMap,
             ResultHandler<?> resultHandler, RowBounds rowBounds, ResultMapping parentMapping) throws SQLException {
+
+        LOGGER.trace("rsw: {}, resultMap: {}, resultHandler: {}, rowBounds: {}, parentMapping: {}", rsw, resultMap,
+                resultHandler, rowBounds, parentMapping);
         DefaultResultContext<Object> resultContext = new DefaultResultContext<Object>();
         skipRows(rsw.getResultSet(), rowBounds);
         while (shouldProcessMoreRows(resultContext, rowBounds) && rsw.getResultSet().next()) {
@@ -353,6 +362,9 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
     private void storeObject(ResultHandler<?> resultHandler, DefaultResultContext<Object> resultContext,
             Object rowValue, ResultMapping parentMapping, ResultSet rs) throws SQLException {
+
+        LOGGER.trace("resultHandlerrs: {}, resultContextrs: {}, rowValuers: {}, parentMapping, rs: {}", resultHandler,
+                resultContext, rowValue, parentMapping, rs);
         if (parentMapping != null) {
             linkToParents(rs, parentMapping, rowValue);
         } else {
@@ -388,6 +400,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     //
 
     private Object getRowValue(ResultSetWrapper rsw, ResultMap resultMap) throws SQLException {
+        LOGGER.trace("rsw: {}, resultMap: {}", rsw, resultMap);
         final ResultLoaderMap lazyLoader = new ResultLoaderMap();
         Object resultObject = createResultObject(rsw, resultMap, lazyLoader, null);
         if (resultObject != null && !hasTypeHandlerForResultObject(rsw, resultMap.getType())) {

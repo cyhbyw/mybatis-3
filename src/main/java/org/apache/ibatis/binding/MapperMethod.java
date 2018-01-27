@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ * Copyright 2009-2016 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.binding;
 
@@ -35,6 +32,8 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
@@ -43,15 +42,18 @@ import org.apache.ibatis.session.SqlSession;
  */
 public class MapperMethod {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapperMethod.class);
     private final SqlCommand command;
     private final MethodSignature method;
 
     public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
+        LOGGER.debug("MapperMethod Constructor. mapperInterface: {}, method: {}", mapperInterface, method);
         this.command = new SqlCommand(config, mapperInterface, method);
         this.method = new MethodSignature(config, mapperInterface, method);
     }
 
     public Object execute(SqlSession sqlSession, Object[] args) {
+        LOGGER.trace("sqlSession: {}, args: {}, command.getType(): {}", sqlSession, args, command.getType());
         Object result;
         switch (command.getType()) {
             case INSERT: {
@@ -205,10 +207,12 @@ public class MapperMethod {
 
     public static class SqlCommand {
 
+        private static final Logger LOGGER = LoggerFactory.getLogger(SqlCommand.class);
         private final String name;
         private final SqlCommandType type;
 
         public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
+            LOGGER.trace("mapperInterface: {}, method: {}, configuration: {}", mapperInterface, method, configuration);
             String statementName = mapperInterface.getName() + "." + method.getName();
             MappedStatement ms = null;
             if (configuration.hasStatement(statementName)) {
@@ -246,6 +250,7 @@ public class MapperMethod {
 
     public static class MethodSignature {
 
+        private static final Logger LOGGER = LoggerFactory.getLogger(MethodSignature.class);
         private final boolean returnsMany;
         private final boolean returnsMap;
         private final boolean returnsVoid;
@@ -257,6 +262,7 @@ public class MapperMethod {
         private final ParamNameResolver paramNameResolver;
 
         public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {
+            LOGGER.trace("mapperInterface: {}, method: {}, configuration: {}", mapperInterface, method, configuration);
             Type resolvedReturnType = TypeParameterResolver.resolveReturnType(method, mapperInterface);
             if (resolvedReturnType instanceof Class<?>) {
                 this.returnType = (Class<?>) resolvedReturnType;
@@ -277,7 +283,9 @@ public class MapperMethod {
         }
 
         public Object convertArgsToSqlCommandParam(Object[] args) {
-            return paramNameResolver.getNamedParams(args);
+            Object o = paramNameResolver.getNamedParams(args);
+            LOGGER.debug("args: {} --> Object: {}", args, o);
+            return o;
         }
 
         public boolean hasRowBounds() {
