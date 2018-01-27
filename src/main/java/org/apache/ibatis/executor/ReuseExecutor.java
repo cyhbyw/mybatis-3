@@ -32,16 +32,20 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
  */
 public class ReuseExecutor extends BaseExecutor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReuseExecutor.class);
     private final Map<String, Statement> statementMap = new HashMap<String, Statement>();
 
     public ReuseExecutor(Configuration configuration, Transaction transaction) {
         super(configuration, transaction);
+        LOGGER.debug("ReuseExecutor Constructor");
     }
 
     @Override

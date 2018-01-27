@@ -34,12 +34,15 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Jeff Butler 
  */
 public class BatchExecutor extends BaseExecutor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchExecutor.class);
     public static final int BATCH_UPDATE_RETURN_VALUE = Integer.MIN_VALUE + 1002;
 
     private final List<Statement> statementList = new ArrayList<Statement>();
@@ -49,6 +52,7 @@ public class BatchExecutor extends BaseExecutor {
 
     public BatchExecutor(Configuration configuration, Transaction transaction) {
         super(configuration, transaction);
+        LOGGER.debug("BatchExecutor Constructor");
     }
 
     @Override

@@ -30,12 +30,15 @@ import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSqlSessionFactory.class);
     private final Configuration configuration;
 
     public DefaultSqlSessionFactory(Configuration configuration) {
@@ -89,6 +92,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
     private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level,
             boolean autoCommit) {
+
+        LOGGER.trace("execType: {}, level: {}, autoCommit: {}", execType, level, autoCommit);
         Transaction tx = null;
         try {
             final Environment environment = configuration.getEnvironment();

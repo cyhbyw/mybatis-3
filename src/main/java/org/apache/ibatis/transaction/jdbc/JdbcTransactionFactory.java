@@ -23,6 +23,8 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Creates {@link JdbcTransaction} instances.
@@ -32,6 +34,8 @@ import org.apache.ibatis.transaction.TransactionFactory;
  * @see JdbcTransaction
  */
 public class JdbcTransactionFactory implements TransactionFactory {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTransactionFactory.class);
 
     @Override
     public void setProperties(Properties props) {}
@@ -43,6 +47,7 @@ public class JdbcTransactionFactory implements TransactionFactory {
 
     @Override
     public Transaction newTransaction(DataSource ds, TransactionIsolationLevel level, boolean autoCommit) {
+        LOGGER.debug("JdbcTransactionFactory#newTransaction()");
         return new JdbcTransaction(ds, level, autoCommit);
     }
 }

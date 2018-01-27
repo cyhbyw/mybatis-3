@@ -25,6 +25,8 @@ import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link Transaction} that makes use of the JDBC commit and rollback facilities directly.
@@ -38,6 +40,7 @@ import org.apache.ibatis.transaction.TransactionException;
  */
 public class JdbcTransaction implements Transaction {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTransaction.class);
     private static final Log log = LogFactory.getLog(JdbcTransaction.class);
 
     protected Connection connection;
@@ -46,6 +49,7 @@ public class JdbcTransaction implements Transaction {
     protected boolean autoCommmit;
 
     public JdbcTransaction(DataSource ds, TransactionIsolationLevel desiredLevel, boolean desiredAutoCommit) {
+        LOGGER.debug("ds: {}, desiredLevel: {}, desiredAutoCommit: {}", ds, desiredLevel, desiredAutoCommit);
         dataSource = ds;
         level = desiredLevel;
         autoCommmit = desiredAutoCommit;

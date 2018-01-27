@@ -547,8 +547,10 @@ public class Configuration {
     }
 
     public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
+        LOGGER.debug("transaction: {}, executorType: {}", transaction, executorType);
         executorType = executorType == null ? defaultExecutorType : executorType;
         executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
+        LOGGER.debug("transaction: {}, executorType: {}", transaction, executorType);
         Executor executor;
         if (ExecutorType.BATCH == executorType) {
             executor = new BatchExecutor(this, transaction);
