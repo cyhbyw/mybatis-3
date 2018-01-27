@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{MM-dd HH:mm:ss,SSS} %-5p (%F:%M(%L))  %m\n"/>
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="org.apache.log4j.FileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <param name="File" value="./mybatis.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{MM-dd HH:mm:ss,SSS} %-5p (%F:%M(%L))  %m\n"/>
+        </layout>
+    </appender>
+
+    <logger name="java.sql">
+        <level value="trace"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="org.apache.ibatis">
+        <level value="trace"/>
+    </logger>
+
+    <root>
+        <level value="trace"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</log4j:configuration>

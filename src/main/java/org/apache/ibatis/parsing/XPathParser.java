@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2015 the original author or authors.
+ * Copyright 2009-2015 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.parsing;
 
@@ -30,6 +27,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.ibatis.builder.BuilderException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -44,6 +43,7 @@ import org.xml.sax.SAXParseException;
  */
 public class XPathParser {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(XPathParser.class);
     private Document document;
     private boolean validation;
     private EntityResolver entityResolver;
@@ -122,6 +122,9 @@ public class XPathParser {
 
     public XPathParser(InputStream inputStream, boolean validation, Properties variables,
             EntityResolver entityResolver) {
+
+        LOGGER.trace("XPathParser Constructor(): inputStream: {}, validation: {}, variables: {}, entityResolver: {}",
+                inputStream, validation, variables, entityResolver);
         commonConstructor(validation, variables, entityResolver);
         this.document = createDocument(new InputSource(inputStream));
     }
@@ -227,6 +230,7 @@ public class XPathParser {
     }
 
     private Document createDocument(InputSource inputSource) {
+        LOGGER.trace("inputSource: {}", inputSource);
         // important: this must only be called AFTER common constructor
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -261,6 +265,7 @@ public class XPathParser {
     }
 
     private void commonConstructor(boolean validation, Properties variables, EntityResolver entityResolver) {
+        LOGGER.trace("validation: {}, variables: {}, entityResolver: {}", validation, variables, entityResolver);
         this.validation = validation;
         this.entityResolver = entityResolver;
         this.variables = variables;

@@ -27,16 +27,21 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeAliasRegistry;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseBuilder.class);
     protected final Configuration configuration;
     protected final TypeAliasRegistry typeAliasRegistry;
     protected final TypeHandlerRegistry typeHandlerRegistry;
 
     public BaseBuilder(Configuration configuration) {
+        LOGGER.debug("public BaseBuilder(Configuration {})", configuration);
         this.configuration = configuration;
         this.typeAliasRegistry = this.configuration.getTypeAliasRegistry();
         this.typeHandlerRegistry = this.configuration.getTypeHandlerRegistry();

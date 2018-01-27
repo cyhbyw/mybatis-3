@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ * Copyright 2009-2016 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.builder.xml;
 
@@ -46,12 +43,15 @@ import org.apache.ibatis.parsing.XPathParser;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
  */
 public class XMLMapperBuilder extends BaseBuilder {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(XMLMapperBuilder.class);
     private XPathParser parser;
     private MapperBuilderAssistant builderAssistant;
     private Map<String, XNode> sqlFragments;
@@ -81,11 +81,15 @@ public class XMLMapperBuilder extends BaseBuilder {
             Map<String, XNode> sqlFragments) {
         this(new XPathParser(inputStream, true, configuration.getVariables(), new XMLMapperEntityResolver()),
                 configuration, resource, sqlFragments);
+        LOGGER.debug("inputStream: {}, configuration: {}, resource: {}, sqlFragments: {}", inputStream, configuration,
+                resource, sqlFragments);
     }
 
     private XMLMapperBuilder(XPathParser parser, Configuration configuration, String resource,
             Map<String, XNode> sqlFragments) {
         super(configuration);
+        LOGGER.trace("parser: {}, configuration: {}, resource: {}, sqlFragments: {}", parser, configuration, resource,
+                sqlFragments);
         this.builderAssistant = new MapperBuilderAssistant(configuration, resource);
         this.parser = parser;
         this.sqlFragments = sqlFragments;
@@ -93,6 +97,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     public void parse() {
+        LOGGER.trace("begin...");
         if (!configuration.isResourceLoaded(resource)) {
             configurationElement(parser.evalNode("/mapper"));
             configuration.addLoadedResource(resource);
@@ -109,6 +114,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void configurationElement(XNode context) {
+        LOGGER.trace("begin...{}", context);
         try {
             String namespace = context.getStringAttribute("namespace");
             if (namespace == null || namespace.equals("")) {
@@ -127,6 +133,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void buildStatementFromContext(List<XNode> list) {
+        LOGGER.trace("begin...{}", list);
         if (configuration.getDatabaseId() != null) {
             buildStatementFromContext(list, configuration.getDatabaseId());
         }
@@ -134,6 +141,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void buildStatementFromContext(List<XNode> list, String requiredDatabaseId) {
+        LOGGER.trace("begin...{}   requiredDatabaseId: {}", list, requiredDatabaseId);
         for (XNode context : list) {
             final XMLStatementBuilder statementParser =
                     new XMLStatementBuilder(configuration, builderAssistant, context, requiredDatabaseId);
@@ -191,6 +199,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void cacheRefElement(XNode context) {
+        LOGGER.trace("begin...{}", context);
         if (context != null) {
             configuration.addCacheRef(builderAssistant.getCurrentNamespace(), context.getStringAttribute("namespace"));
             CacheRefResolver cacheRefResolver =
@@ -204,6 +213,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void cacheElement(XNode context) throws Exception {
+        LOGGER.trace("begin...{}", context);
         if (context != null) {
             String type = context.getStringAttribute("type", "PERPETUAL");
             Class<? extends Cache> typeClass = typeAliasRegistry.resolveAlias(type);
@@ -219,6 +229,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void parameterMapElement(List<XNode> list) throws Exception {
+        LOGGER.trace("begin...{}", list);
         for (XNode parameterMapNode : list) {
             String id = parameterMapNode.getStringAttribute("id");
             String type = parameterMapNode.getStringAttribute("type");
@@ -248,6 +259,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void resultMapElements(List<XNode> list) throws Exception {
+        LOGGER.trace("begin...{}", list);
         for (XNode resultMapNode : list) {
             try {
                 resultMapElement(resultMapNode);
@@ -332,6 +344,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     }
 
     private void sqlElement(List<XNode> list) throws Exception {
+        LOGGER.trace("begin...{}", list);
         if (configuration.getDatabaseId() != null) {
             sqlElement(list, configuration.getDatabaseId());
         }

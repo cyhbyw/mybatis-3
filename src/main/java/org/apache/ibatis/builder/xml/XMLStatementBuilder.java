@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2015 the original author or authors.
+ * Copyright 2009-2015 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.builder.xml;
 
@@ -32,12 +29,15 @@ import org.apache.ibatis.mapping.StatementType;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
  */
 public class XMLStatementBuilder extends BaseBuilder {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(XMLStatementBuilder.class);
     private MapperBuilderAssistant builderAssistant;
     private XNode context;
     private String requiredDatabaseId;
@@ -49,12 +49,15 @@ public class XMLStatementBuilder extends BaseBuilder {
     public XMLStatementBuilder(Configuration configuration, MapperBuilderAssistant builderAssistant, XNode context,
             String databaseId) {
         super(configuration);
+        LOGGER.debug("configuration: {}, builderAssistant: {}, context: {}, databaseId: {}", configuration,
+                builderAssistant, context, databaseId);
         this.builderAssistant = builderAssistant;
         this.context = context;
         this.requiredDatabaseId = databaseId;
     }
 
     public void parseStatementNode() {
+        LOGGER.trace("begin...");
         String id = context.getStringAttribute("id");
         String databaseId = context.getStringAttribute("databaseId");
 

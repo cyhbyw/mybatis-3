@@ -1,17 +1,14 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ * Copyright 2009-2016 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.apache.ibatis.builder.xml;
 
@@ -46,12 +43,15 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.JdbcType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
 public class XMLConfigBuilder extends BaseBuilder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(XMLConfigBuilder.class);
 
     private boolean parsed;
     private XPathParser parser;
@@ -80,10 +80,13 @@ public class XMLConfigBuilder extends BaseBuilder {
 
     public XMLConfigBuilder(InputStream inputStream, String environment, Properties props) {
         this(new XPathParser(inputStream, true, props, new XMLMapperEntityResolver()), environment, props);
+        LOGGER.trace("XMLConfigBuilder Constructor(): inputStream: {}, environment: {}, props: {}", inputStream,
+                environment, props);
     }
 
     private XMLConfigBuilder(XPathParser parser, String environment, Properties props) {
         super(new Configuration());
+        LOGGER.trace("parser: {}, environment: {}, props: {}", parser, environment, props);
         ErrorContext.instance().resource("SQL Mapper Configuration");
         this.configuration.setVariables(props);
         this.parsed = false;
@@ -101,6 +104,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void parseConfiguration(XNode root) {
+        LOGGER.trace("root:\n{}", root);
         try {
             Properties settings = settingsAsPropertiess(root.evalNode("settings"));
             //issue #117 read properties first
@@ -123,9 +127,11 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private Properties settingsAsPropertiess(XNode context) {
+        LOGGER.trace("begin...");
         if (context == null) {
             return new Properties();
         }
+        LOGGER.trace("begin...{}", context);
         Properties props = context.getChildrenAsProperties();
         // Check that all settings are known to the configuration class
         MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
@@ -139,6 +145,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void loadCustomVfs(Properties props) throws ClassNotFoundException {
+        LOGGER.trace("begin...{}", props);
         String value = props.getProperty("vfsImpl");
         if (value != null) {
             String[] clazzes = value.split(",");
@@ -153,7 +160,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void typeAliasesElement(XNode parent) {
+        LOGGER.trace("begin...");
         if (parent != null) {
+            LOGGER.trace("begin...{}", parent);
             for (XNode child : parent.getChildren()) {
                 if ("package".equals(child.getName())) {
                     String typeAliasPackage = child.getStringAttribute("name");
@@ -177,7 +186,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void pluginElement(XNode parent) throws Exception {
+        LOGGER.trace("begin...");
         if (parent != null) {
+            LOGGER.trace("begin...{}", parent);
             for (XNode child : parent.getChildren()) {
                 String interceptor = child.getStringAttribute("interceptor");
                 Properties properties = child.getChildrenAsProperties();
@@ -189,7 +200,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void objectFactoryElement(XNode context) throws Exception {
+        LOGGER.trace("begin...");
         if (context != null) {
+            LOGGER.trace("begin...{}", context);
             String type = context.getStringAttribute("type");
             Properties properties = context.getChildrenAsProperties();
             ObjectFactory factory = (ObjectFactory) resolveClass(type).newInstance();
@@ -199,7 +212,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void objectWrapperFactoryElement(XNode context) throws Exception {
+        LOGGER.trace("begin...");
         if (context != null) {
+            LOGGER.trace("begin...{}", context);
             String type = context.getStringAttribute("type");
             ObjectWrapperFactory factory = (ObjectWrapperFactory) resolveClass(type).newInstance();
             configuration.setObjectWrapperFactory(factory);
@@ -207,7 +222,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void reflectorFactoryElement(XNode context) throws Exception {
+        LOGGER.trace("begin...");
         if (context != null) {
+            LOGGER.trace("begin...{}", context);
             String type = context.getStringAttribute("type");
             ReflectorFactory factory = (ReflectorFactory) resolveClass(type).newInstance();
             configuration.setReflectorFactory(factory);
@@ -215,7 +232,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void propertiesElement(XNode context) throws Exception {
+        LOGGER.trace("begin...");
         if (context != null) {
+            LOGGER.trace("begin...{}", context);
             Properties defaults = context.getChildrenAsProperties();
             String resource = context.getStringAttribute("resource");
             String url = context.getStringAttribute("url");
@@ -238,6 +257,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void settingsElement(Properties props) throws Exception {
+        LOGGER.trace("begin...{}", props);
         configuration.setAutoMappingBehavior(
                 AutoMappingBehavior.valueOf(props.getProperty("autoMappingBehavior", "PARTIAL")));
         configuration.setAutoMappingUnknownColumnBehavior(AutoMappingUnknownColumnBehavior
@@ -271,7 +291,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void environmentsElement(XNode context) throws Exception {
+        LOGGER.trace("begin...{}", context.getName());
         if (context != null) {
+            LOGGER.trace("begin...{}", context);
             if (environment == null) {
                 environment = context.getStringAttribute("default");
             }
@@ -290,8 +312,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void databaseIdProviderElement(XNode context) throws Exception {
+        LOGGER.trace("begin...");
         DatabaseIdProvider databaseIdProvider = null;
         if (context != null) {
+            LOGGER.trace("begin...{}", context);
             String type = context.getStringAttribute("type");
             // awful patch to keep backward compatibility
             if ("VENDOR".equals(type)) {
@@ -331,7 +355,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void typeHandlerElement(XNode parent) throws Exception {
+        LOGGER.trace("begin...");
         if (parent != null) {
+            LOGGER.trace("begin...{}", parent);
             for (XNode child : parent.getChildren()) {
                 if ("package".equals(child.getName())) {
                     String typeHandlerPackage = child.getStringAttribute("name");
@@ -358,7 +384,9 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void mapperElement(XNode parent) throws Exception {
+        LOGGER.trace("begin...{}", parent.getName());
         if (parent != null) {
+            LOGGER.trace("begin...{}", parent);
             for (XNode child : parent.getChildren()) {
                 if ("package".equals(child.getName())) {
                     String mapperPackage = child.getStringAttribute("name");
@@ -367,6 +395,7 @@ public class XMLConfigBuilder extends BaseBuilder {
                     String resource = child.getStringAttribute("resource");
                     String url = child.getStringAttribute("url");
                     String mapperClass = child.getStringAttribute("class");
+                    LOGGER.trace("resource: {}, url: {}, mapperClass: {}", resource, url, mapperClass);
                     if (resource != null && url == null && mapperClass == null) {
                         ErrorContext.instance().resource(resource);
                         InputStream inputStream = Resources.getResourceAsStream(resource);
