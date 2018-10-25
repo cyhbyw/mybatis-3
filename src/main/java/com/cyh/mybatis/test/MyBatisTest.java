@@ -58,6 +58,21 @@ public class MyBatisTest {
         }
     }
 
+    @Test
+    public void test03() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        LOGGER.debug("sqlSessionFactory: {}", sqlSessionFactory);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Employee e = buildEmployee();
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            mapper.addEmployeeWithBothParam2(e);
+            System.err.println("After insert. id = " + e.getId());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
     private Employee buildEmployee() {
         Employee e = new Employee();
         e.setLastName("cyh");
@@ -67,7 +82,7 @@ public class MyBatisTest {
     }
 
     @Test
-    public void test03() throws IOException {
+    public void test04() throws IOException {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         LOGGER.debug("sqlSessionFactory: {}", sqlSessionFactory);
         SqlSession sqlSession = sqlSessionFactory.openSession();

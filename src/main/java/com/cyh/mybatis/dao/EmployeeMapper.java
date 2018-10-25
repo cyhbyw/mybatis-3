@@ -28,6 +28,15 @@ public interface EmployeeMapper {
     void addEmployeeWithBothParam(@Param("e") Employee e);
 
     /**
+     * 此方法可行
+     * 注意----注意----注意：此方法与上述方法的区别在于   id  <----> e.id
+     * @param e
+     */
+    @InsertProvider(type = EmployeeProvider.class, method = "addEmployeeWithBothParam")
+    @Options(useGeneratedKeys = true, keyProperty = "e.id", keyColumn = "e.id")
+    void addEmployeeWithBothParam2(@Param("e") Employee e);
+
+    /**
      * Mapper 和 Provider 中都没有添加 @Param 注解，'返回数据库Id策略'生效
      * @param e
      */
