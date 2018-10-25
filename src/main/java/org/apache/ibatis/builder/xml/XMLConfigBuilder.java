@@ -291,9 +291,8 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void environmentsElement(XNode context) throws Exception {
-        LOGGER.trace("begin...{}", context.getName());
         if (context != null) {
-            LOGGER.trace("begin...{}", context);
+            LOGGER.trace("begin...{}", context.getName());
             if (environment == null) {
                 environment = context.getStringAttribute("default");
             }
@@ -384,9 +383,8 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
 
     private void mapperElement(XNode parent) throws Exception {
-        LOGGER.trace("begin...{}", parent.getName());
         if (parent != null) {
-            LOGGER.trace("begin...{}", parent);
+            LOGGER.trace("begin...{}", parent.getName());
             for (XNode child : parent.getChildren()) {
                 if ("package".equals(child.getName())) {
                     String mapperPackage = child.getStringAttribute("name");
