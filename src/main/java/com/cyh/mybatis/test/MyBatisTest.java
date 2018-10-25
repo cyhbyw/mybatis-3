@@ -8,11 +8,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.cyh.mybatis.bean.Employee;
 import com.cyh.mybatis.dao.EmployeeMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author CYH
@@ -36,11 +36,48 @@ public class MyBatisTest {
         try {
             EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
             Employee employee = mapper.getEmpById(1);
-            System.out.println("mapper.getClass(): " + mapper.getClass());
-            System.out.println(employee);
+            System.err.println("mapper.getClass(): " + mapper.getClass());
+            System.err.println(employee);
         } finally {
             sqlSession.close();
         }
+    }
 
+    @Test
+    public void test02() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        LOGGER.debug("sqlSessionFactory: {}", sqlSessionFactory);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Employee e = buildEmployee();
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            mapper.addEmployeeWithBothParam(e);
+            System.err.println("After insert. id = " + e.getId());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    private Employee buildEmployee() {
+        Employee e = new Employee();
+        e.setLastName("cyh");
+        e.setEmail("cyh@qq.com");
+        e.setGender("0");
+        return e;
+    }
+
+    @Test
+    public void test03() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        LOGGER.debug("sqlSessionFactory: {}", sqlSessionFactory);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Employee e = buildEmployee();
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            mapper.addEmployeeWithoutParam(e);
+            System.err.println("After insert. id = " + e.getId());
+        } finally {
+            sqlSession.close();
+        }
     }
 }
