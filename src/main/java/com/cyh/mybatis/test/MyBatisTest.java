@@ -2,6 +2,8 @@ package com.cyh.mybatis.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -91,6 +93,28 @@ public class MyBatisTest {
             EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
             mapper.addEmployeeWithoutParam(e);
             System.err.println("After insert. id = " + e.getId());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    /**
+     * 批量插入时，也可以返回主键Id
+     * @throws IOException
+     */
+    @Test
+    public void test05() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        LOGGER.debug("sqlSessionFactory: {}", sqlSessionFactory);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Employee employee1 = buildEmployee();
+            Employee employee2 = buildEmployee();
+            List<Employee> list = Arrays.asList(employee1, employee2);
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            mapper.batchInsertAndGenerateId(list);
+            System.err.println("employee1.getId() " + employee1.getId());
+            System.err.println("employee2.getId() " + employee2.getId());
         } finally {
             sqlSession.close();
         }

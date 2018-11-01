@@ -1,5 +1,7 @@
 package com.cyh.mybatis.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -43,4 +45,6 @@ public interface EmployeeMapper {
     @InsertProvider(type = EmployeeProvider.class, method = "addEmployeeWithoutParam")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void addEmployeeWithoutParam(Employee e);
+
+    void batchInsertAndGenerateId(@Param("list") List<Employee> list);
 }

@@ -9,4 +9,12 @@
 		select id, last_name lastName, email, gender from tbl_employee where id = #{id}
 	</select>
 
+    <insert id="batchInsertAndGenerateId" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO tbl_employee(last_name, email, gender)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.lastName}, #{item.email}, #{item.gender})
+        </foreach>
+    </insert>
+
 </mapper>
